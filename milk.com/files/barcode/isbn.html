@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+  <title>Barcode Server: ISBNs (Media Identification Numbers)</title>
+</head>
+<body>
+<h1>Barcode Server: ISBNs (Media Identification Numbers)</h1>
+
+<p>Within the last few years, standard UPC/EAN barcodes, such as the ones
+that this site can produce, have been used to encode ISBNs, that is, the
+identification numbers that are mostly associated with books and magazines,
+but also can be used for other media, such as CDs and DVDs.</p>
+
+<p>If you want to encode an ISBN, it's pretty simple:</p>
+
+<p>Start with the 10 digit ISBN, and drop the last digit. (Actually, these
+days, the last digit is often printed as "X".) This leaves you with nine
+digits. Add "978" to the beginning of the number. Now you have a 12-digit
+number. The final barcode will have 13 digits, the last digit being a
+"checksum" that the Barcode Server will calculate for you if you put a
+question mark ("?") there. So, enter the 12 digits--just the digits, no
+hyphens or anything else--followed by the question mark, and you should get
+the proper barcode.</p>
+
+<p>For example, I am looking at Nolo Press's <i>Fight Your Ticket...and
+Win!</i>, which has ISBN "0-87337-294-8". The nine useful digits are
+"087337294". Adding "978" to the beginning, it becomes "978087337294".
+Adding a question mark to the end, I get "978087337294?", which I type into
+the Barcode Server input field, and out pops the barcode for that book.</p>
+
+<p>Note that often books come with a five digit supplemental barcode off to
+the right of the main one (which often represents the retail price of the
+book). You can encode that with the Barcode Server too, using the <a
+href="server/">advanced options page</a>. Refer to that page for more
+details.</p>
+
+<p><hr>
+<a href="./">The Barcode Server</a><br>
+Site copyright &copy; 1994&ndash;2023 Dan Bornstein. All rights reserved.</p>
+</body>
+</html>

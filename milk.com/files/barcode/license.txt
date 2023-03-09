@@ -1,0 +1,23 @@
+Milk.com Barcode Server Source License
+--------------------------------------
+
+This license, issued by Dan Bornstein, entitles you to use the Milk.com
+Barcode Server source code for any purpose whatsoever, except that you may
+not resell the source code itself. You may, however, sell a product or
+service which utilizes the source code, presumably in compiled form.
+
+The source code in question may be found on the web via a link from the URL
+<http://www.milk.com/barcode/>. It is available as both .zip and .tar.gz
+archives.
+
+While reasonable efforts have been made to assure that the source code is
+bug-free, no guarantee is made that that is in fact the case. Updates to
+the source code are made from time to time, and, within three years of
+having entered into this license, you may, at your discretion, choose to
+use the updated source code instead of the original code that you received.
+After that time, a new license is required before you may use updated
+source code, but you may continue to use the code you already have for as
+long as you want.
+
+Licensee: __________
+Date:     __________
