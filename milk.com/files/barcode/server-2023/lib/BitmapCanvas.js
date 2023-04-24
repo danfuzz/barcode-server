@@ -40,9 +40,18 @@ export class BitmapCanvas extends CanvasWrapper {
   /**
    * Renders the canvas. Subclasses are expected to override this.
    */
-  renderCanvas() {
+  async renderCanvas() {
     const canvas = this.canvas;
-    const ctx = canvas.getContext('2d');
+    const ctx    = canvas.getContext('2d');
+    ctx.reset();
+
+    const data    = ctx.createImageData(this.#bitmap.width, this.#bitmap.height);
+    const scale   = Math.min(Math.trunc(canvas.width / data.width), Math.trunc(canvas.height / data.height));
+    const xMargin = Math.trunc((canvas.width - (data.width * scale)) / scale / 2);
+    const yMargin = Math.trunc((canvas.height - (data.height * scale)) / scale / 2);
+
+    this.#bitmap.copyIntoImageData(data);
+    const bitmap = await createImageBitmap(data);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -50,13 +59,11 @@ export class BitmapCanvas extends CanvasWrapper {
       return;
     }
 
-    ctx.fillStyle = '#400';
+    ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    const data = ctx.createImageData(this.#bitmap.width, this.#bitmap.height);
-
-    this.#bitmap.copyIntoImageData(data);
-
-    ctx.putImageData(data, 0, 0);
+    ctx.scale(scale, scale);
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(bitmap, xMargin, yMargin);
   }
 }
