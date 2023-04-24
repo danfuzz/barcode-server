@@ -12,6 +12,9 @@ export class BitmapCanvas extends CanvasWrapper {
   /** @type {?Bitmap} The bitmap to render, if any. */
   #bitmap = null;
 
+  /** @type {?ImageBitmap} The document-model bitmap, if any. */
+  #imageBitmap = null;
+
   /**
    * Constructs an instance.
    *
@@ -34,36 +37,42 @@ export class BitmapCanvas extends CanvasWrapper {
    */
   set bitmap(bitmap) {
     this.#bitmap = bitmap;
-    this.render();
+
+    (async () => {
+      const canvas = this.canvas;
+      const ctx    = canvas.getContext('2d');
+      const data   = ctx.createImageData(bitmap.width, bitmap.height);
+
+      bitmap.copyIntoImageData(data);
+      this.#imageBitmap = await createImageBitmap(data);
+
+      this.render();
+    })();
   }
 
-  /**
-   * Renders the canvas. Subclasses are expected to override this.
-   */
-  async renderCanvas() {
+  /** @override. */
+  renderCanvas() {
     const canvas = this.canvas;
     const ctx    = canvas.getContext('2d');
     ctx.reset();
 
-    const data    = ctx.createImageData(this.#bitmap.width, this.#bitmap.height);
-    const scale   = Math.min(Math.trunc(canvas.width / data.width), Math.trunc(canvas.height / data.height));
-    const xMargin = Math.trunc((canvas.width - (data.width * scale)) / scale / 2);
-    const yMargin = Math.trunc((canvas.height - (data.height * scale)) / scale / 2);
-
-    this.#bitmap.copyIntoImageData(data);
-    const bitmap = await createImageBitmap(data);
-
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    if (!this.#bitmap) {
+    if (!this.#imageBitmap) {
       return;
     }
+
+    const { width, height } = this.#bitmap;
+
+    const scale   = Math.min(Math.trunc(canvas.width / width), Math.trunc(canvas.height / height));
+    const xMargin = Math.trunc((canvas.width - (width * scale)) / scale / 2);
+    const yMargin = Math.trunc((canvas.height - (height * scale)) / scale / 2);
 
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.scale(scale, scale);
     ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(bitmap, xMargin, yMargin);
+    ctx.drawImage(this.#imageBitmap, xMargin, yMargin);
   }
 }

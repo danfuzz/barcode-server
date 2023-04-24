@@ -9,7 +9,10 @@ const bc = new BitmapCanvas(
     document.querySelector('table.barcode td'), 'barcodeDisplay');
 
 document.querySelector('button.draw').onclick = () => {
-  console.log('TODO: Render!');
+  const valueNode = document.querySelector('input[name="value"]');
+  const titleNode = document.querySelector('input[name="title"]');
+  const modeNode  = document.querySelector('select[name="mode"]');
+  console.log('TODO: Render!', valueNode.value, titleNode.value, modeNode.value);
 }
 
 const bitmap = Barcode.makeUpcA('12345665432?', false, 0, 0);
