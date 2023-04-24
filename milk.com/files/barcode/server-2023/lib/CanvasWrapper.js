@@ -24,6 +24,7 @@ export class CanvasWrapper {
     // Make a `div` to hold the canvas and the style node.
     this.#divNode = doc.createElement('div');
     style = this.#divNode.style;
+    //style.position = 'relative';
     style.width = '100%';
     style.height = '100%';
     node.appendChild(this.#divNode);
@@ -37,6 +38,9 @@ export class CanvasWrapper {
     /** The main display canvas. */
     this.#canvas = doc.createElement('canvas');
     style = this.#canvas.style;
+    //style.position = 'absolute';
+    //style.top = '0';
+    //style.left = '0';
     style.width = '100%';
     style.height = '100%';
     this.#divNode.appendChild(this.#canvas);
@@ -84,8 +88,7 @@ export class CanvasWrapper {
    */
   #adjustCanvasSize() {
     // Copy the dimensions of the canvas from the `div`, which ensures the
-    // aspect ratio remains the same. Thus, the canvases will have square
-    // pixels.
+    // aspect ratio remains the same. Thus, the canvas will have square pixels.
     const node   = this.#divNode;
     const ratio  = window.devicePixelRatio ?? 1;
     const width  = ratio * node.clientWidth;
