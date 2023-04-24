@@ -119,11 +119,8 @@ export class Bitmap {
    * @param {number} height The height to copy.
    */
   copyRect(dx, dy, src, sx, sy, width, height) {
-    console.log('########## COPY FROM', sx, sy, width, height, src);
-    console.log('########## COPY TO', dx, dy, this);
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
-        console.log('#### GET', x + sx, y + sy, src.get(x + sx, y + sy), src.#buffer[y + sy]);
         this.set(x + dx, y + dy, src.get(x + sx, y + sy));
       }
     }
