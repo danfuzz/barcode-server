@@ -292,7 +292,7 @@ export class Barcode {
       const baseX = x + 2 + i * 9;
 
       // Separator / end of header.
-      if (i == 0) {
+      if (i === 0) {
         this.#bitmap.vlin(baseX, y, y2);
       }
       this.#bitmap.vlin(baseX + 1, y, y2);
@@ -329,15 +329,43 @@ export class Barcode {
       this.#drawUpcEanDigit(
         x + 3 + i*7,
         y1,
-        (i == 0) ? guardY2 : barY2,
+        (i === 0) ? guardY2 : barY2,
         digits[i],
         'leftA');
       this.#drawUpcEanDigit(
         x + 50 + i*7,
         y1,
-        (i == 5) ? guardY2 : barY2,
+        (i === 5) ? guardY2 : barY2,
         digits[i+6],
         'right');
+    }
+  }
+
+  /**
+   * Draws the actual barcode part of a UPC-E barcode.
+   *
+   * @param {string} digits The digits to draw.
+   * @param {number} x The x coordinate.
+   * @param {number} y1 The starting y coordinate (inclusive).
+   * @param {number} barY2 The ending y coordinate for most bars (inclusive).
+   * @param {number} guardY2 The ending y coordinate for guards (inclusive).
+   */
+  #drawUpcEBars(digits, x, y1, barY2, guardY2) {
+    const parityRaw = Barcode.#upcELastDigit[Barcode.#charToDigit(digits[7])];
+    const parityPattern = (digits[0] === '0') ? parityPattern : ~parityPattern;
+
+    // Header.
+    this.#bitmap.vlin(x, y1, guardY2);
+    this.#bitmap.vlin(x + 2, y1, guardY2);
+
+    // Trailer.
+    this.#bitmap.vlin(x + 46, y1, guardY2);
+    this.#bitmap.vlin(x + 48, y1, guardY2);
+    this.#bitmap.vlin(x + 50, y1, guardY2);
+
+    for (let i = 0; i < 6; i++) {
+      const lset = (parityPattern & (1 << (5 - i))) ? 'leftB' : 'leftA';
+      this.#drawUpcEanDigit(x + 3 + i*7, y1, barY2, digits[i + 1], lset);
     }
   }
 
@@ -385,7 +413,7 @@ export class Barcode {
    * @returns {Bitmap} The rendered result.
    */
   static makeUpcA(digits, shortForm, y, extraWidth) {
-    if (digits[11] == '?') {
+    if (digits[11] === '?') {
       let mul = 3;
       let sum = 0;
 
@@ -483,5 +511,146 @@ export class Barcode {
     }
 
     return bc.bitmap;
+  }
+
+  /**
+   * Makes a full-height UPC-E barcode.
+   *
+   * @param {string} digits The barcode digits.
+   * @param {number} y The y coordinate to render at.
+   * @param {number} extraWidth Extra width to include in the result.
+   * @returns {Bitmap} The rendered result.
+   */
+  static #makeUpcEFull(digits, y, extraWidth) {
+    const baseWidth = 63;
+    const baseHeight = 60;
+
+    const height = baseHeight + y;
+    const bc = new Barcode(
+      baseWidth + ((extraWidth <= 6) ? 0 : (extraWidth - 6)),
+      height);
+
+    bc.#drawUpcEBars(digits, 6, y, height - 10, height - 4);
+
+    bc.#drawDigitChar(0, height - 14, digits[0]);
+
+    for (let i = 0; i < 6; i++) {
+      bc.#drawDigitChar(11 + i*7, height - 7, digits[i+1]);
+    }
+
+    bc.#drawDigitChar(59, height - 14, digits[7]);
+
+    return bc.bitmap;
+  }
+
+  /**
+   * Makes a short-height UPC-E barcode.
+   *
+   * @param {string} digits The barcode digits.
+   * @param {number} y The y coordinate to render at.
+   * @param {number} extraWidth Extra width to include in the result.
+   * @returns {Bitmap} The rendered result.
+   */
+  static #makeUpcEShort(digits, y, extraWidth) {
+    const baseWidth = 51;
+    const baseHeight = 40;
+
+    const height = baseHeight + y;
+    const bc = new Barcode(baseWidth + extraWidth, height);
+
+    bc.#drawUpcEBars(digits, 0, y, height - 9, height - 9);
+
+    for (let i = 0; i < 8; i++) {
+      bc.#drawDigitChar(2 + i*6, height - 7, digits[i]);
+    }
+
+    return bc.bitmap;
+  }
+
+  /*
+   * Compresses 12 digits into a UPC-E number, returning the compressed form,
+   * or `null` if the form factor is incorrect.
+   *
+   * @param {string} expanded The original form.
+   * @returns {?string} The compressed form.
+   */
+  static #compressToUpcEDigits(expanded) {
+    const compressed = new Array(8);
+
+    compressed[7] = expanded[11];
+
+    if ((expanded[0] != '0') && (expanded[0] != '1')) {
+      return null;
+    }
+
+    if (expanded[5] != '0') {
+      if (   (expanded[6] != '0')
+          || (expanded[7] != '0')
+          || (expanded[8] != '0')
+          || (expanded[9] != '0')
+          || (expanded[10] < '5')) {
+        return null;
+      }
+
+      compressed[0] = expanded[0];
+      compressed[1] = expanded[1];
+      compressed[2] = expanded[2];
+      compressed[3] = expanded[3];
+      compressed[4] = expanded[4];
+      compressed[5] = expanded[5];
+      compressed[6] = expanded[10];
+      return compressed.join('');
+    }
+
+    if (expanded[4] != '0')
+    {
+      if (   (expanded[6] != '0')
+          || (expanded[7] != '0')
+          || (expanded[8] != '0')
+          || (expanded[9] != '0')) {
+        return null;
+      }
+
+      compressed[0] = expanded[0];
+      compressed[1] = expanded[1];
+      compressed[2] = expanded[2];
+      compressed[3] = expanded[3];
+      compressed[4] = expanded[4];
+      compressed[5] = expanded[10];
+      compressed[6] = '4';
+      return compressed.join('');
+    }
+
+    if (   (expanded[3] != '0')
+        && (expanded[3] != '1')
+        && (expanded[3] != '2')) {
+      if (   (expanded[6] != '0')
+          || (expanded[7] != '0')
+          || (expanded[8] != '0')) {
+        return null;
+      }
+
+      compressed[0] = expanded[0];
+      compressed[1] = expanded[1];
+      compressed[2] = expanded[2];
+      compressed[3] = expanded[3];
+      compressed[4] = expanded[9];
+      compressed[5] = expanded[10];
+      compressed[6] = '3';
+      return compressed.join('');
+    }
+
+    if ((expanded[6] != '0') || (expanded[7] != '0')) {
+      return null;
+    }
+
+    compressed[0] = expanded[0];
+    compressed[1] = expanded[1];
+    compressed[2] = expanded[2];
+    compressed[3] = expanded[8];
+    compressed[4] = expanded[9];
+    compressed[5] = expanded[10];
+    compressed[6] = expanded[3];
+    return compressed.join('');
   }
 }

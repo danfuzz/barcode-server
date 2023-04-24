@@ -1044,7 +1044,7 @@ Bitmap *makeUpcEShort (char *digits, int y, int extraWidth)
 }
 
 /* compress 12 digits into a UPC-E number, storing into the given result
- * arroy, or just store '\0' into the first element, if the form factor
+ * array, or just store '\0' into the first element, if the form factor
  * is incorrect */
 void compressToUpcEDigits (char *expanded, char *compressed)
 {
@@ -1138,7 +1138,7 @@ void compressToUpcEDigits (char *expanded, char *compressed)
 }
 
 /* expand 8 UPC-E digits into a UPC-A number, storing into the given result
- * arroy, or just store '\0' into the first element, if the form factor
+ * array, or just store '\0' into the first element, if the form factor
  * is incorrect; this will also calculate the check digit, if it is
  * specified as '?' */
 void expandToUpcADigits (char *compressed, char *expanded)
