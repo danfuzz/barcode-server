@@ -567,7 +567,7 @@ export class Barcode {
     return bc.bitmap;
   }
 
-  /*
+  /**
    * Compresses 12 digits into a UPC-E number, returning the compressed form,
    * or `null` if the form factor is incorrect.
    *
@@ -652,5 +652,87 @@ export class Barcode {
     compressed[5] = expanded[10];
     compressed[6] = expanded[3];
     return compressed.join('');
+  }
+
+  /*
+   * Expands 8 UPC-E digits into a UPC-A number, returning the expanded form,
+   * or returning `null` if the form factor is incorrect. This will also
+   * calculate the check digit, if it is specified as '?'.
+   *
+   * @param {string} compressed The compressed form.
+   * @returns {string} The expanded form.
+   */
+  static #expandToUpcADigits(compressed) {
+    if ((compressed[0] != '0') && (compressed[0] != '1')) {
+      return null;
+    }
+
+    const expanded = new Array(12);
+
+    expanded[0] = compressed[0];
+    expanded[6] = '0';
+    expanded[7] = '0';
+    expanded[11] = compressed[7];
+
+    switch (compressed[6]) {
+      case '0':
+      case '1':
+      case '2': {
+        expanded[1] = compressed[1];
+        expanded[2] = compressed[2];
+        expanded[3] = compressed[6];
+        expanded[4] = '0';
+        expanded[5] = '0';
+        expanded[8] = compressed[3];
+        expanded[9] = compressed[4];
+        expanded[10] = compressed[5];
+        break;
+      }
+      case '3': {
+        expanded[1] = compressed[1];
+        expanded[2] = compressed[2];
+        expanded[3] = compressed[3];
+        expanded[4] = '0';
+        expanded[5] = '0';
+        expanded[8] = '0';
+        expanded[9] = compressed[4];
+        expanded[10] = compressed[5];
+        break;
+      }
+      case '4': {
+        expanded[1] = compressed[1];
+        expanded[2] = compressed[2];
+        expanded[3] = compressed[3];
+        expanded[4] = compressed[4];
+        expanded[5] = '0';
+        expanded[8] = '0';
+        expanded[9] = '0';
+        expanded[10] = compressed[5];
+        break;
+      }
+      default: {
+        expanded[1] = compressed[1];
+        expanded[2] = compressed[2];
+        expanded[3] = compressed[3];
+        expanded[4] = compressed[4];
+        expanded[5] = compressed[5];
+        expanded[8] = '0';
+        expanded[9] = '0';
+        expanded[10] = compressed[6];
+        break;
+      }
+    }
+
+    if (expanded[11] == '?') {
+      let mul = 3;
+      let sum = 0;
+
+      for (let i = 0; i < 11; i++) {
+        sum += Barcode.#charToDigit(expanded[i]) * mul;
+        mul ^= 2;
+      }
+
+      expanded[11] = String((10 - (sum % 10)) % 10);
+    }
   }
 }
