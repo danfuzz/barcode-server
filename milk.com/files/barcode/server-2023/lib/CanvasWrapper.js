@@ -21,33 +21,34 @@ export class CanvasWrapper {
     const doc = node.ownerDocument;
     let style;
 
-    // Make a `div` to hold the canvas and the style node.
+    // Make a `div` to hold the canvas and the style node. It has to be set for
+    // explicit relative positioning, otherwise the child nodes will "leak" out.
     this.#divNode = doc.createElement('div');
     style = this.#divNode.style;
-    //style.position = 'relative';
+    style.position = 'relative';
     style.width = '100%';
     style.height = '100%';
+    style.padding = '0px';
     node.appendChild(this.#divNode);
 
-    /** The node which is consulted for CSS style info. */
+    // The node which is consulted for CSS style info.
     this.#styleNode = doc.createElement('span');
     this.#styleNode.className = cssClass;
     this.#styleNode.display = 'hidden';
     this.#divNode.appendChild(this.#styleNode);
 
-    /** The main display canvas. */
+    // The main display canvas.
     this.#canvas = doc.createElement('canvas');
     style = this.#canvas.style;
-    //style.position = 'absolute';
-    //style.top = '0';
-    //style.left = '0';
+    style.position = 'absolute';
+    style.top = '0';
+    style.left = '0';
     style.width = '100%';
     style.height = '100%';
     this.#divNode.appendChild(this.#canvas);
 
     (async () => {
       await null; // So that all this is done after the constructor returns.
-      this.#adjustCanvasSize();
       this.#autoAdjustCanvasSize();
       this.#autoRefresh();
     })();
@@ -120,6 +121,7 @@ export class CanvasWrapper {
         ? 100 + (rand * 50)
         : 3000 + (rand * 1000);
 
+      this.#adjustCanvasSize();
       this.render();
       view.setTimeout(refresh, waitMsec);
       count++;

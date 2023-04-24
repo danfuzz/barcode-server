@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Aleo:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Amaranth:ital,wght@0,400;0,700;1,400;1,700&family=Raleway:ital,wght@0,400;0,700;1,400;1,700&family=Redressed&family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+:root {
+  --font-family-body:       Aleo, serif;
+  --font-family-body-serif: Aleo, serif;
+  --font-family-body-sans:  Raleway, sans-serif;
+  --font-family-heading:    Amaranth, sans-serif;
+  --font-family-cursive:    Redressed, sans-serif;
+  --font-family-mono:       Roboto Mono, monospace;
+}
+
+body {
+    background-color: #ddeeff;
+    color: #222244;
+    font-family: var(--font-family-body);
+    font-weight: normal;
+    font-size: 14pt;
+    line-height: 150%;
+
+    margin-top: 2em;
+    margin-left: 5em;
+    margin-right: 5em;
+}
+
+code, tt {
+    font-family: var(--font-family-mono);
+    font-size: 95%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-heading);
+    text-align: center;
+}
+
+/* Nodes of this class are generated programmatically. */
+.barcodeDisplay {
+    background-color: white;
+    color: black;
+}
+
+table.barcode {
+    width: 60vw;
+    height: 30vw;
+    margin-left: auto;
+    margin-right: auto;
+}
