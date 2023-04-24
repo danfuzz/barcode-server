@@ -1,0 +1,50 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <script type="module" src="index.js"></script>
+    <title>Barcode Server: Advanced Options</title>
+</head>
+
+<body>
+
+<h1>Barcode Server: Advanced Options</h1>
+
+<p><hr></p>
+
+<table>
+<tr>
+  <td>Enter value to encode:</td>
+  <td><input type="text" name="value" size=20></td>
+  <td>Enter title text:</td>
+  <td><input type="text" name="title" size=50></td>
+</tr>
+<tr>
+  <td>Mode:</td>
+  <td><select NAME="mode" SIZE=1>
+        <option value="upcean" selected>UPC / EAN</option>
+        <option value="upcean-short">UPC / EAN, short height</option>
+        <option value="upce">UPC-E</option>
+        <option value="upce-short">UPC-E, short height</option>
+        <option value="ean8">EAN-8</option>
+        <option value="ean8-short">EAN-8, short height</option>
+        <option value="text">Text Generator</option>
+      </select>
+  </td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><button class="draw">Show it!</button><br></td>
+</tr>
+</table>
+
+<table class="barcode">
+  <tr>
+    <td></td>
+  </tr>
+</table>
+
+</body>
+</html>
