@@ -132,12 +132,12 @@ void bitmapFree (Bitmap *b)
 int bitmapGetByte (Bitmap *b, int xByte, int y)
 {
     if ((xByte < 0) ||
-	(xByte >= b->widthBytes) ||
-	(y < 0) ||
-	(y >= b->height))
+        (xByte >= b->widthBytes) ||
+        (y < 0) ||
+        (y >= b->height))
     {
-	/* out-of-range get returns 0 */
-	return 0;
+        /* out-of-range get returns 0 */
+        return 0;
     }
 
     return b->buf[b->widthBytes * y + xByte];
@@ -160,36 +160,36 @@ void bitmapSet (Bitmap *b, int x, int y, int value)
     int xbit = x & 0x7;
 
     if ((x < 0) ||
-	(x >= b->width) ||
-	(y < 0) ||
-	(y >= b->height))
+        (x >= b->width) ||
+        (y < 0) ||
+        (y >= b->height))
     {
-	/* ignore out-of-range set */
-	return;
+        /* ignore out-of-range set */
+        return;
     }
 
     if (value)
     {
-	b->buf[b->widthBytes * y + xbyte] |= 1 << xbit;
+        b->buf[b->widthBytes * y + xbyte] |= 1 << xbit;
     }
     else
     {
-	b->buf[b->widthBytes * y + xbyte] &= ~(1 << xbit);
+        b->buf[b->widthBytes * y + xbyte] &= ~(1 << xbit);
     }
 }
 
 /* copy the given rectangle to the given destination from the given source. */
 void bitmapCopyRect (Bitmap *dest, int dx, int dy,
-		     Bitmap *src, int sx, int sy, int width, int height)
+                     Bitmap *src, int sx, int sy, int width, int height)
 {
     int x, y;
 
     for (y = 0; y < height; y++)
     {
-	for (x = 0; x < width; x++)
-	{
-	    bitmapSet (dest, x + dx, y + dy, bitmapGet (src, x + sx, y + sy));
-	}
+        for (x = 0; x < width; x++)
+        {
+            bitmapSet (dest, x + dx, y + dy, bitmapGet (src, x + sx, y + sy));
+        }
     }
 }
 
@@ -205,28 +205,28 @@ void bitmapVlin (Bitmap *b, int x, int y1, int y2)
 
 /* print out the given bitmap as an XBM format image */
 void bitmapPrintXBM (Bitmap *b, const char *comment, const char *name,
-		     int httpHeader)
+                     int httpHeader)
 {
     int xbyte, y, col, spac;
 
     /* do not edit; some XBM renderers are picky about this */
     static char spacingTable[] = {
-	15, 9,  10, 11, 5,  11, 11, 15, 9, 9,  4, 11, 9, 10, 5, 11,
-	8,  10, 15, 10, 14, 11, 2,  11, 5, 11, 0, 0,  0, 0,  0, 0
+        15, 9,  10, 11, 5,  11, 11, 15, 9, 9,  4, 11, 9, 10, 5, 11,
+        8,  10, 15, 10, 14, 11, 2,  11, 5, 11, 0, 0,  0, 0,  0, 0
     };
     static int spacingLen = sizeof (spacingTable) / sizeof (char) * 4;
 
     if (httpHeader)
     {
-	printf ("Content-Type: image/x-xbitmap\n"
-		"Cache-Control: max-age=3600\n"
-		"\n");
+        printf ("Content-Type: image/x-xbitmap\n"
+                "Cache-Control: max-age=3600\n"
+                "\n");
     }
 
     printf ("#define %s_width %d\n"
             "#define %s_height %d\n"
             "static char %s_bits[] = {\n",
-	    name, b->width, name, b->height, name);
+            name, b->width, name, b->height, name);
 
     col = 10;
     spac = 0;
@@ -234,29 +234,29 @@ void bitmapPrintXBM (Bitmap *b, const char *comment, const char *name,
     {
         for (xbyte = 0; xbyte < b->widthBytes; xbyte++)
         {
-	    if (col == 10)
-	    {
-		printf ("   ");
-		col = 0;
-	    }
+            if (col == 10)
+            {
+                printf ("   ");
+                col = 0;
+            }
             printf ("0x%02x%s", bitmapGetByte (b, xbyte, y),
-		    (spacingTable[spac >> 2] & (1 << (spac & 0x3))) ?
-		    " ," : ", ");
-	    spac++;
-	    if (spac == spacingLen)
-	    {
-		spac = 0;
-	    }
-	    col++;
-	    if (col == 10)
-	    {
-		printf ("\n");
-	    }
+                    (spacingTable[spac >> 2] & (1 << (spac & 0x3))) ?
+                    " ," : ", ");
+            spac++;
+            if (spac == spacingLen)
+            {
+                spac = 0;
+            }
+            col++;
+            if (col == 10)
+            {
+                printf ("\n");
+            }
         }
     }
     printf ("};\n"
-	    "/* %s */\n",
-	    comment);
+            "/* %s */\n",
+            comment);
 }
 
 
@@ -370,23 +370,23 @@ void bitmapDrawString5x8 (Bitmap *b, int x, int y, char *str)
 
     while (*str != '\0')
     {
-	char c = *str;
-	if (c == '\n')
-	{
-	    x = origx;
-	    y += 8;
-	}
-	else
-	{
-	    if (c < ' ')
-	    {
-		c = ' ';
-	    }
+        char c = *str;
+        if (c == '\n')
+        {
+            x = origx;
+            y += 8;
+        }
+        else
+        {
+            if (c < ' ')
+            {
+                c = ' ';
+            }
 
-	    bitmapDrawChar5x8 (b, x, y, c);
-	    x += 5;
-	}
-	str++;
+            bitmapDrawChar5x8 (b, x, y, c);
+            x += 5;
+        }
+        str++;
     }
 }
 
@@ -407,31 +407,31 @@ void textToXbm (char *str, int httpHeader)
 
     while (*in)
     {
-	if (*in == '\n')
-	{
-	    lineCount++;
-	    if (oneWidth > maxWidth)
-	    {
-		maxWidth = oneWidth;
-	    }
-	    oneWidth = 0;
-	}
-	else
-	{
-	    oneWidth++;
-	}
-	in++;
+        if (*in == '\n')
+        {
+            lineCount++;
+            if (oneWidth > maxWidth)
+            {
+                maxWidth = oneWidth;
+            }
+            oneWidth = 0;
+        }
+        else
+        {
+            oneWidth++;
+        }
+        in++;
     }
 
     if (oneWidth > maxWidth)
     {
-	maxWidth = oneWidth;
+        maxWidth = oneWidth;
     }
 
     b = makeBitmap (maxWidth * 5 + 4, lineCount * 8 + 4);
     bitmapDrawString5x8 (b, 2, 2, str);
     bitmapPrintXBM (b, "milk.com text image; http://www.milk.com/barcode/",
-		    "milk_text", httpHeader);
+                    "milk_text", httpHeader);
     bitmapFree (b);
 }
 
@@ -524,14 +524,14 @@ void wordsToPonderXbm (int httpHeader)
     char buf[1000];
 
     strcpy (buf,
-	    "Password incorrect\n"
-	    "or too old, but here's\n"
-	    "something to ponder:\n\n");
+            "Password incorrect\n"
+            "or too old, but here's\n"
+            "something to ponder:\n\n");
 
     strcat (buf, wordsToPonder[choice]);
 
     strcat (buf,
-	    "\nBrought to you by:\nwww.milk.com");
+            "\nBrought to you by:\nwww.milk.com");
 
     textToXbm (buf, httpHeader);
 }
@@ -716,11 +716,11 @@ int charToDigit (char c)
 {
     if ((c >= '0') && (c <= '9'))
     {
-	return c - '0';
+        return c - '0';
     }
     else
     {
-	return 0;
+        return 0;
     }
 }
 
@@ -730,7 +730,7 @@ void drawDigitChar (Bitmap *b, int x, int y, char c)
 {
     if ((c < '0') || (c > '9'))
     {
-	c = '0';
+        c = '0';
     }
 
     bitmapDrawChar5x8 (b, x, y, c);
@@ -738,7 +738,7 @@ void drawDigitChar (Bitmap *b, int x, int y, char c)
 
 /* draw a upc/ean digit at the given coordinates */
 void drawUpcEanDigit (Bitmap *upcBitmap, int x, int y1, int y2, char n,
-		      UpcSet set)
+                      UpcSet set)
 {
     unsigned int bits;
     int i;
@@ -746,17 +746,17 @@ void drawUpcEanDigit (Bitmap *upcBitmap, int x, int y1, int y2, char n,
     n = charToDigit (n);
     switch (set)
     {
-	case UPC_LEFT_A: bits = upcLeftA[n]; break;
-	case UPC_LEFT_B: bits = upcLeftB[n]; break;
-	case UPC_RIGHT:  bits = upcRight[n]; break;
+        case UPC_LEFT_A: bits = upcLeftA[n]; break;
+        case UPC_LEFT_B: bits = upcLeftB[n]; break;
+        case UPC_RIGHT:  bits = upcRight[n]; break;
     }
 
     for (i = 6; i >=0; i--)
     {
         if (bits & (1 << i))
-	{
+        {
             bitmapVlin (upcBitmap, x, y1, y2);
-	}
+        }
         x++;
     }
 }
@@ -767,15 +767,15 @@ int upcEanSupplementWidth (char *digits)
 {
     switch (strlen (digits))
     {
-	case 2: return 28; /* 8 + 4 + 2*7 + 1*2 */
-	case 5: return 55; /* 8 + 4 + 5*7 + 4*2 */
-	default: return 0;
+        case 2: return 28; /* 8 + 4 + 2*7 + 1*2 */
+        case 5: return 55; /* 8 + 4 + 5*7 + 4*2 */
+        default: return 0;
     }
 }
 
 /* draw the given supplemental barcode, including the textual digits */
 void drawUpcEanSupplementalBars (Bitmap *upcBitmap, char *digits,
-				 int x, int y, int y2, int textAbove)
+                                 int x, int y, int y2, int textAbove)
 {
     int len = strlen (digits);
     int i;
@@ -785,42 +785,42 @@ void drawUpcEanSupplementalBars (Bitmap *upcBitmap, char *digits,
 
     if (textAbove)
     {
-	textY = y;
-	y += 8;
+        textY = y;
+        y += 8;
     }
     else
     {
-	y2 -= 8;
-	textY = y2 + 2;
+        y2 -= 8;
+        textY = y2 + 2;
     }
 
     x += 8; /* skip the space between the main and supplemental */
 
     switch (len)
     {
-	case 2:
-	{
-	    textX = x + 5;
-	    parity = (charToDigit (digits[0]) * 10 +
-		      charToDigit (digits[1])) & 0x3;
-	    break;
-	}
-	case 5:
-	{
-	    textX = x + 10;
-	    parity =
-		((charToDigit (digits[0]) + charToDigit (digits[2]) +
-		  charToDigit (digits[4])) * 3
-		 + (charToDigit (digits[1]) + charToDigit (digits[3])) * 9)
-		% 10;
-	    parity = upcELastDigit[parity];
-	    break;
-	}
-	default:
-	{
-	    parity = 0;
-	    break;
-	}
+        case 2:
+        {
+            textX = x + 5;
+            parity = (charToDigit (digits[0]) * 10 +
+                      charToDigit (digits[1])) & 0x3;
+            break;
+        }
+        case 5:
+        {
+            textX = x + 10;
+            parity =
+                ((charToDigit (digits[0]) + charToDigit (digits[2]) +
+                  charToDigit (digits[4])) * 3
+                 + (charToDigit (digits[1]) + charToDigit (digits[3])) * 9)
+                % 10;
+            parity = upcELastDigit[parity];
+            break;
+        }
+        default:
+        {
+            parity = 0;
+            break;
+        }
     }
 
     /* header */
@@ -830,23 +830,23 @@ void drawUpcEanSupplementalBars (Bitmap *upcBitmap, char *digits,
 
     for (i = 0; i < len; i++)
     {
-	UpcSet lset =
-	    (parity & (1 << (len - 1 - i))) ? UPC_LEFT_B : UPC_LEFT_A;
-	int baseX = x + 2 + i * 9;
+        UpcSet lset =
+            (parity & (1 << (len - 1 - i))) ? UPC_LEFT_B : UPC_LEFT_A;
+        int baseX = x + 2 + i * 9;
 
-	/* separator / end of header */
-	if (i == 0)
-	{
-	    bitmapVlin (upcBitmap, baseX, y, y2);
-	}
-	bitmapVlin (upcBitmap, baseX + 1, y, y2);
+        /* separator / end of header */
+        if (i == 0)
+        {
+            bitmapVlin (upcBitmap, baseX, y, y2);
+        }
+        bitmapVlin (upcBitmap, baseX + 1, y, y2);
 
         drawUpcEanDigit (upcBitmap,
-			 baseX + 2,
-			 y,
-			 y2,
-			 digits[i],
-			 lset);
+                         baseX + 2,
+                         y,
+                         y2,
+                         digits[i],
+                         lset);
 
         drawDigitChar (upcBitmap, textX + i*6, textY, digits[i]);
     }
@@ -854,7 +854,7 @@ void drawUpcEanSupplementalBars (Bitmap *upcBitmap, char *digits,
 
 /* draw the actual barcode part of a UPC-A barcode */
 void drawUpcABars (Bitmap *upcBitmap, char *digits, int x, int y,
-		   int barY2, int guardY2)
+                   int barY2, int guardY2)
 {
     int i;
 
@@ -873,17 +873,17 @@ void drawUpcABars (Bitmap *upcBitmap, char *digits, int x, int y,
     for (i = 0; i < 6; i++)
     {
         drawUpcEanDigit (upcBitmap,
-			 x + 3 + i*7,
-			 y,
-			 (i == 0) ? guardY2 : barY2,
-			 digits[i],
-			 UPC_LEFT_A);
+                         x + 3 + i*7,
+                         y,
+                         (i == 0) ? guardY2 : barY2,
+                         digits[i],
+                         UPC_LEFT_A);
         drawUpcEanDigit (upcBitmap,
-			 x + 50 + i*7,
-			 y,
-			 (i == 5) ? guardY2 : barY2,
-			 digits[i+6],
-			 UPC_RIGHT);
+                         x + 50 + i*7,
+                         y,
+                         (i == 5) ? guardY2 : barY2,
+                         digits[i+6],
+                         UPC_RIGHT);
     }
 }
 
@@ -895,8 +895,8 @@ Bitmap *makeUpcAFull (char *digits, int y, int extraWidth)
 
     int height = baseHeight + y;
     Bitmap *result = makeBitmap (baseWidth +
-				 ((extraWidth <= 6) ? 0 : (extraWidth - 6)),
-				 height);
+                                 ((extraWidth <= 6) ? 0 : (extraWidth - 6)),
+                                 height);
     int i;
 
     drawUpcABars (result, digits, 6, y, height - 10, height - 4);
@@ -943,8 +943,8 @@ Bitmap *makeUpcA (char *digits, int shortForm, int y, int extraWidth)
 
     for (i = 0; i < 11; i++)
     {
-	sum += charToDigit (digits[i]) * mul;
-	mul ^= 2;
+        sum += charToDigit (digits[i]) * mul;
+        mul ^= 2;
     }
 
     if (digits[11] == '?')
@@ -954,24 +954,24 @@ Bitmap *makeUpcA (char *digits, int shortForm, int y, int extraWidth)
 
     if (shortForm)
     {
-	return makeUpcAShort (digits, y, extraWidth);
+        return makeUpcAShort (digits, y, extraWidth);
     }
     else
     {
-	return makeUpcAFull (digits, y, extraWidth);
+        return makeUpcAFull (digits, y, extraWidth);
     }
 }
 
 /* draw the actual barcode part of a UPC-E barcode */
 void drawUpcEBars (Bitmap *upcBitmap, char *digits, int x, int y,
-		   int barY2, int guardY2)
+                   int barY2, int guardY2)
 {
     int i;
     int parityPattern = upcELastDigit[charToDigit(digits[7])];
 
     if (digits[0] == '1')
     {
-	parityPattern = ~parityPattern;
+        parityPattern = ~parityPattern;
     }
 
     /* header */
@@ -985,15 +985,15 @@ void drawUpcEBars (Bitmap *upcBitmap, char *digits, int x, int y,
 
     for (i = 0; i < 6; i++)
     {
-	UpcSet lset =
-	    (parityPattern & (1 << (5 - i))) ? UPC_LEFT_B : UPC_LEFT_A;
+        UpcSet lset =
+            (parityPattern & (1 << (5 - i))) ? UPC_LEFT_B : UPC_LEFT_A;
 
         drawUpcEanDigit (upcBitmap,
-			 x + 3 + i*7,
-			 y,
-			 barY2,
-			 digits[i + 1],
-			 lset);
+                         x + 3 + i*7,
+                         y,
+                         barY2,
+                         digits[i + 1],
+                         lset);
     }
 }
 
@@ -1005,8 +1005,8 @@ Bitmap *makeUpcEFull (char *digits, int y, int extraWidth)
 
     int height = baseHeight + y;
     Bitmap *result = makeBitmap (baseWidth +
-				 ((extraWidth <= 6) ? 0 : (extraWidth - 6)),
-				 height);
+                                 ((extraWidth <= 6) ? 0 : (extraWidth - 6)),
+                                 height);
     int i;
 
     drawUpcEBars (result, digits, 6, y, height - 10, height - 4);
@@ -1056,75 +1056,75 @@ void compressToUpcEDigits (char *expanded, char *compressed)
 
     if ((expanded[0] != '0') && (expanded[0] != '1'))
     {
-	return;
+        return;
     }
 
     if (expanded[5] != '0')
     {
-	if ((expanded[6] != '0')
-	    || (expanded[7] != '0')
-	    || (expanded[8] != '0')
-	    || (expanded[9] != '0')
-	    || (expanded[10] < '5'))
-	{
-	    return;
-	}
+        if ((expanded[6] != '0')
+            || (expanded[7] != '0')
+            || (expanded[8] != '0')
+            || (expanded[9] != '0')
+            || (expanded[10] < '5'))
+        {
+            return;
+        }
 
-	compressed[0] = expanded[0];
-	compressed[1] = expanded[1];
-	compressed[2] = expanded[2];
-	compressed[3] = expanded[3];
-	compressed[4] = expanded[4];
-	compressed[5] = expanded[5];
-	compressed[6] = expanded[10];
-	return;
+        compressed[0] = expanded[0];
+        compressed[1] = expanded[1];
+        compressed[2] = expanded[2];
+        compressed[3] = expanded[3];
+        compressed[4] = expanded[4];
+        compressed[5] = expanded[5];
+        compressed[6] = expanded[10];
+        return;
     }
 
     if (expanded[4] != '0')
     {
-	if ((expanded[6] != '0')
-	    || (expanded[7] != '0')
-	    || (expanded[8] != '0')
-	    || (expanded[9] != '0'))
-	{
-	    return;
-	}
+        if ((expanded[6] != '0')
+            || (expanded[7] != '0')
+            || (expanded[8] != '0')
+            || (expanded[9] != '0'))
+        {
+            return;
+        }
 
-	compressed[0] = expanded[0];
-	compressed[1] = expanded[1];
-	compressed[2] = expanded[2];
-	compressed[3] = expanded[3];
-	compressed[4] = expanded[4];
-	compressed[5] = expanded[10];
-	compressed[6] = '4';
-	return;
+        compressed[0] = expanded[0];
+        compressed[1] = expanded[1];
+        compressed[2] = expanded[2];
+        compressed[3] = expanded[3];
+        compressed[4] = expanded[4];
+        compressed[5] = expanded[10];
+        compressed[6] = '4';
+        return;
     }
 
     if ((expanded[3] != '0')
-	&& (expanded[3] != '1')
-	&& (expanded[3] != '2'))
+        && (expanded[3] != '1')
+        && (expanded[3] != '2'))
     {
-	if ((expanded[6] != '0')
-	    || (expanded[7] != '0')
-	    || (expanded[8] != '0'))
-	{
-	    return;
-	}
+        if ((expanded[6] != '0')
+            || (expanded[7] != '0')
+            || (expanded[8] != '0'))
+        {
+            return;
+        }
 
-	compressed[0] = expanded[0];
-	compressed[1] = expanded[1];
-	compressed[2] = expanded[2];
-	compressed[3] = expanded[3];
-	compressed[4] = expanded[9];
-	compressed[5] = expanded[10];
-	compressed[6] = '3';
-	return;
+        compressed[0] = expanded[0];
+        compressed[1] = expanded[1];
+        compressed[2] = expanded[2];
+        compressed[3] = expanded[3];
+        compressed[4] = expanded[9];
+        compressed[5] = expanded[10];
+        compressed[6] = '3';
+        return;
     }
 
     if ((expanded[6] != '0')
-	|| (expanded[7] != '0'))
+        || (expanded[7] != '0'))
     {
-	return;
+        return;
     }
 
     compressed[0] = expanded[0];
@@ -1147,7 +1147,7 @@ void expandToUpcADigits (char *compressed, char *expanded)
 
     if ((compressed[0] != '0') && (compressed[0] != '1'))
     {
-	return;
+        return;
     }
 
     expanded[0] = compressed[0];
@@ -1157,68 +1157,68 @@ void expandToUpcADigits (char *compressed, char *expanded)
 
     switch (compressed[6])
     {
-	case '0':
-	case '1':
-	case '2':
-	{
-	    expanded[1] = compressed[1];
-	    expanded[2] = compressed[2];
-	    expanded[3] = compressed[6];
-	    expanded[4] = '0';
-	    expanded[5] = '0';
-	    expanded[8] = compressed[3];
-	    expanded[9] = compressed[4];
-	    expanded[10] = compressed[5];
-	    break;
-	}
-	case '3':
-	{
-	    expanded[1] = compressed[1];
-	    expanded[2] = compressed[2];
-	    expanded[3] = compressed[3];
-	    expanded[4] = '0';
-	    expanded[5] = '0';
-	    expanded[8] = '0';
-	    expanded[9] = compressed[4];
-	    expanded[10] = compressed[5];
-	    break;
-	}
-	case '4':
-	{
-	    expanded[1] = compressed[1];
-	    expanded[2] = compressed[2];
-	    expanded[3] = compressed[3];
-	    expanded[4] = compressed[4];
-	    expanded[5] = '0';
-	    expanded[8] = '0';
-	    expanded[9] = '0';
-	    expanded[10] = compressed[5];
-	    break;
-	}
-	default:
-	{
-	    expanded[1] = compressed[1];
-	    expanded[2] = compressed[2];
-	    expanded[3] = compressed[3];
-	    expanded[4] = compressed[4];
-	    expanded[5] = compressed[5];
-	    expanded[8] = '0';
-	    expanded[9] = '0';
-	    expanded[10] = compressed[6];
-	    break;
-	}
+        case '0':
+        case '1':
+        case '2':
+        {
+            expanded[1] = compressed[1];
+            expanded[2] = compressed[2];
+            expanded[3] = compressed[6];
+            expanded[4] = '0';
+            expanded[5] = '0';
+            expanded[8] = compressed[3];
+            expanded[9] = compressed[4];
+            expanded[10] = compressed[5];
+            break;
+        }
+        case '3':
+        {
+            expanded[1] = compressed[1];
+            expanded[2] = compressed[2];
+            expanded[3] = compressed[3];
+            expanded[4] = '0';
+            expanded[5] = '0';
+            expanded[8] = '0';
+            expanded[9] = compressed[4];
+            expanded[10] = compressed[5];
+            break;
+        }
+        case '4':
+        {
+            expanded[1] = compressed[1];
+            expanded[2] = compressed[2];
+            expanded[3] = compressed[3];
+            expanded[4] = compressed[4];
+            expanded[5] = '0';
+            expanded[8] = '0';
+            expanded[9] = '0';
+            expanded[10] = compressed[5];
+            break;
+        }
+        default:
+        {
+            expanded[1] = compressed[1];
+            expanded[2] = compressed[2];
+            expanded[3] = compressed[3];
+            expanded[4] = compressed[4];
+            expanded[5] = compressed[5];
+            expanded[8] = '0';
+            expanded[9] = '0';
+            expanded[10] = compressed[6];
+            break;
+        }
     }
 
     if (expanded[11] == '?')
     {
-	unsigned int mul = 3;
-	unsigned int sum = 0;
+        unsigned int mul = 3;
+        unsigned int sum = 0;
 
-	for (i = 0; i < 11; i++)
-	{
-	    sum += charToDigit (expanded[i]) * mul;
-	    mul ^= 2;
-	}
+        for (i = 0; i < 11; i++)
+        {
+            sum += charToDigit (expanded[i]) * mul;
+            mul ^= 2;
+        }
 
         expanded[11] = ((10 - (sum % 10)) % 10) + '0';
     }
@@ -1235,54 +1235,54 @@ Bitmap *makeUpcE (char *digits, int shortForm, int y, int extraWidth)
 
     switch (strlen (digits))
     {
-	case 7:
-	{
-	    compressedDigits[0] = '0';
-	    strcpy (compressedDigits + 1, digits);
-	    break;
-	}
-	case 8:
-	{
-	    strcpy (compressedDigits, digits);
-	    break;
-	}
-	case 12:
-	{
-	    strcpy (expandedDigits, digits);
-	    compressToUpcEDigits (expandedDigits, compressedDigits);
-	    if (compressedDigits[0] == '\0')
-	    {
-		return NULL;
-	    }
-	    break;
-	}
-	default:
-	{
-	    return NULL;
-	}
+        case 7:
+        {
+            compressedDigits[0] = '0';
+            strcpy (compressedDigits + 1, digits);
+            break;
+        }
+        case 8:
+        {
+            strcpy (compressedDigits, digits);
+            break;
+        }
+        case 12:
+        {
+            strcpy (expandedDigits, digits);
+            compressToUpcEDigits (expandedDigits, compressedDigits);
+            if (compressedDigits[0] == '\0')
+            {
+                return NULL;
+            }
+            break;
+        }
+        default:
+        {
+            return NULL;
+        }
     }
 
     expandToUpcADigits (compressedDigits, expandedDigits);
     if (expandedDigits[0] == '\0')
     {
-	return NULL;
+        return NULL;
     }
 
     compressedDigits[7] = expandedDigits[11];
 
     if (shortForm)
     {
-	return makeUpcEShort (compressedDigits, y, extraWidth);
+        return makeUpcEShort (compressedDigits, y, extraWidth);
     }
     else
     {
-	return makeUpcEFull (compressedDigits, y, extraWidth);
+        return makeUpcEFull (compressedDigits, y, extraWidth);
     }
 }
 
 /* draw the actual barcode part of a EAN-13 barcode */
 void drawEan13Bars (Bitmap *upcBitmap, char *digits, int x, int y,
-		   int barY2, int guardY2)
+                   int barY2, int guardY2)
 {
     int i;
     int leftPattern = ean13FirstDigit[charToDigit (digits[0])];
@@ -1301,20 +1301,20 @@ void drawEan13Bars (Bitmap *upcBitmap, char *digits, int x, int y,
 
     for (i = 0; i < 6; i++)
     {
-	UpcSet lset = (leftPattern & (1 << (5 - i))) ? UPC_LEFT_B : UPC_LEFT_A;
+        UpcSet lset = (leftPattern & (1 << (5 - i))) ? UPC_LEFT_B : UPC_LEFT_A;
 
         drawUpcEanDigit (upcBitmap,
-			 x + 3 + i*7,
-			 y,
-			 barY2,
-			 digits[i+1],
-			 lset);
+                         x + 3 + i*7,
+                         y,
+                         barY2,
+                         digits[i+1],
+                         lset);
         drawUpcEanDigit (upcBitmap,
-			 x + 50 + i*7,
-			 y,
-			 barY2,
-			 digits[i+7],
-			 UPC_RIGHT);
+                         x + 50 + i*7,
+                         y,
+                         barY2,
+                         digits[i+7],
+                         UPC_RIGHT);
     }
 }
 
@@ -1370,8 +1370,8 @@ Bitmap *makeEan13 (char *digits, int shortForm, int y, int extraWidth)
 
     for (i = 0; i < 12; i++)
     {
-	sum += charToDigit (digits[i]) * mul;
-	mul ^= 2;
+        sum += charToDigit (digits[i]) * mul;
+        mul ^= 2;
     }
 
     if (digits[12] == '?')
@@ -1381,11 +1381,11 @@ Bitmap *makeEan13 (char *digits, int shortForm, int y, int extraWidth)
 
     if (shortForm)
     {
-	return makeEan13Short (digits, y, extraWidth);
+        return makeEan13Short (digits, y, extraWidth);
     }
     else
     {
-	return makeEan13Full (digits, y, extraWidth);
+        return makeEan13Full (digits, y, extraWidth);
     }
 }
 
@@ -1393,7 +1393,7 @@ Bitmap *makeEan13 (char *digits, int shortForm, int y, int extraWidth)
 
 /* draw the actual barcode part of an EAN-8 barcode */
 void drawEan8Bars (Bitmap *upcBitmap, char *digits, int x, int y,
-		   int barY2, int guardY2)
+                   int barY2, int guardY2)
 {
     int i;
 
@@ -1412,17 +1412,17 @@ void drawEan8Bars (Bitmap *upcBitmap, char *digits, int x, int y,
     for (i = 0; i < 4; i++)
     {
         drawUpcEanDigit (upcBitmap,
-			 x + 3 + i*7,
-			 y,
-			 barY2,
-			 digits[i],
-			 UPC_LEFT_A);
+                         x + 3 + i*7,
+                         y,
+                         barY2,
+                         digits[i],
+                         UPC_LEFT_A);
         drawUpcEanDigit (upcBitmap,
-			 x + 36 + i*7,
-			 y,
-			 barY2,
-			 digits[i+4],
-			 UPC_RIGHT);
+                         x + 36 + i*7,
+                         y,
+                         barY2,
+                         digits[i+4],
+                         UPC_RIGHT);
     }
 }
 
@@ -1476,8 +1476,8 @@ Bitmap *makeEan8 (char *digits, int shortForm, int y, int extraWidth)
 
     for (i = 0; i < 7; i++)
     {
-	sum += charToDigit (digits[i]) * mul;
-	mul ^= 2;
+        sum += charToDigit (digits[i]) * mul;
+        mul ^= 2;
     }
 
     if (digits[7] == '?')
@@ -1487,11 +1487,11 @@ Bitmap *makeEan8 (char *digits, int shortForm, int y, int extraWidth)
 
     if (shortForm)
     {
-	return makeEan8Short (digits, y, extraWidth);
+        return makeEan8Short (digits, y, extraWidth);
     }
     else
     {
-	return makeEan8Full (digits, y, extraWidth);
+        return makeEan8Full (digits, y, extraWidth);
     }
 }
 
@@ -1499,7 +1499,7 @@ Bitmap *makeEan8 (char *digits, int shortForm, int y, int extraWidth)
  * based on the number of digits present and/or requested; pass
  * explicitDigitCount as 0 if you want DWIM-type behavior */
 void processUpcEan (char *str, int explicitDigitCount, int shortForm,
-		    int httpHeader)
+                    int httpHeader)
 {
     char digits[16];
     int digitCount = 0;
@@ -1514,46 +1514,46 @@ void processUpcEan (char *str, int explicitDigitCount, int shortForm,
 
     if (str == NULL)
     {
-	str = "000000000000";
-	instr = str;
+        str = "000000000000";
+        instr = str;
     }
 
     while ((digitCount < 15) && (supDigitCount < 7))
     {
-	char c = *instr;
+        char c = *instr;
         if (((c >= '0') && (c <= '9')) || (c == '?'))
         {
-	    if (supplement)
-	    {
-		supDigits[supDigitCount] = *instr;
-		supDigitCount++;
-	    }
-	    else
-	    {
-		digits[digitCount] = *instr;
-		digitCount++;
-	    }
+            if (supplement)
+            {
+                supDigits[supDigitCount] = *instr;
+                supDigitCount++;
+            }
+            else
+            {
+                digits[digitCount] = *instr;
+                digitCount++;
+            }
         }
-	else if (c == ',')
-	{
-	    supplement = 1;
-	}
-	else if (c == ':')
-	{
-	    banner = instr + 1;
-	    break;
-	}
-	else if (c == '\0')
-	{
-	    break;
-	}
-	else
-	{
-	    mcheck += ((c == 0x5b) && (instr == str)) |
-		((c == 0x4d) && (instr == (str + 1))) |
-		((c == 0x5d) && (instr == (str + 2)));
-	}
-	instr++;
+        else if (c == ',')
+        {
+            supplement = 1;
+        }
+        else if (c == ':')
+        {
+            banner = instr + 1;
+            break;
+        }
+        else if (c == '\0')
+        {
+            break;
+        }
+        else
+        {
+            mcheck += ((c == 0x5b) && (instr == str)) |
+                ((c == 0x4d) && (instr == (str + 1))) |
+                ((c == 0x5d) && (instr == (str + 2)));
+        }
+        instr++;
     }
 
     digits[digitCount] = '\0';
@@ -1561,172 +1561,172 @@ void processUpcEan (char *str, int explicitDigitCount, int shortForm,
 
     if (supDigitCount == 0)
     {
-	supplement = 0;
+        supplement = 0;
     }
     else if ((supDigitCount == 2) || (supDigitCount == 5))
     {
-	supplement = upcEanSupplementWidth (supDigits);
+        supplement = upcEanSupplementWidth (supDigits);
     }
     else
     {
-	textToXbm ("The entered number is not supported;\n"
-		   "supplements may only be 2 or 5 digits.",
-		   httpHeader);
-	return;
+        textToXbm ("The entered number is not supported;\n"
+                   "supplements may only be 2 or 5 digits.",
+                   httpHeader);
+        return;
     }
 
     if (banner == NULL)
     {
-	banner = defaultBannerMsg;
+        banner = defaultBannerMsg;
     }
     else if (*banner == '\0')
     {
-	banner = NULL;
-	vstart = 0;
+        banner = NULL;
+        vstart = 0;
     }
 
     switch (digitCount)
     {
-	case 7:
-	{
-	    if ((explicitDigitCount != 0) && (explicitDigitCount != 6))
-	    {
-		textToXbm ("The entered number is not supported;\n"
-			   "Passing 7 digits is only possible for\n"
-			   "UPC-E barcodes.",
-			   httpHeader);
-		return;
-	    }
-	    barcode = makeUpcE (digits, shortForm, vstart, supplement);
-	    break;
-	}
-	case 8:
-	{
-	    if (explicitDigitCount == 0)
-	    {
-		if (digits[0] == '0')
-		{
-		    barcode = makeUpcE (digits, shortForm, vstart, supplement);
-		}
-		else
-		{
-		    barcode = makeEan8 (digits, shortForm, vstart, supplement);
-		}
-	    }
-	    else if (explicitDigitCount == 6)
-	    {
-		barcode = makeUpcE (digits, shortForm, vstart, supplement);
-		if (barcode == NULL)
-		{
-		    textToXbm ("The entered number is not supported;\n"
-			       "UPC-E barcodes must start with the\n"
-			       "digit 0 or 1.",
-			       httpHeader);
-		    return;
-		}
-	    }
-	    else if (explicitDigitCount == 8)
-	    {
-		barcode = makeEan8 (digits, shortForm, vstart, supplement);
-	    }
-	    else
-	    {
-		textToXbm ("The entered number is not supported;\n"
-			   "Passing 8 digits is only possible for\n"
-			   "EAN-8 and UPC-E barcodes.",
-			   httpHeader);
-		return;
-	    }
-	    break;
-	}
-	case 12:
-	{
-	    if ((explicitDigitCount == 0) || (explicitDigitCount == 12))
-	    {
-		barcode = makeUpcA (digits, shortForm, vstart, supplement);
-	    }
-	    else if (explicitDigitCount == 6)
-	    {
-		barcode = makeUpcE (digits, shortForm, vstart, supplement);
-		if (barcode == NULL)
-		{
-		    textToXbm ("The entered number is not supported;\n"
-			       "In order to fit into a UPC-E barcode,\n"
-			       "the original number must meet several\n"
-			       "restrictions.",
-			       httpHeader);
-		    return;
-		}
-	    }
-	    else
-	    {
-		textToXbm ("The entered number is not supported;\n"
-			   "Passing 12 digits is only possible for\n"
-			   "UPC-A and UPC-E barcodes.",
-			   httpHeader);
-		return;
-	    }
-	    break;
-	}
-	case 13:
-	{
-	    if ((explicitDigitCount != 0)
-		&& (explicitDigitCount != 12))
-	    {
-		textToXbm ("The entered number is not supported;\n"
-			   "Passing 13 digits is only possible for\n"
-			   "EAN-13 barcodes.",
-			   httpHeader);
-		return;
-	    }
-	    barcode = makeEan13 (digits, shortForm, vstart, supplement);
-	    break;
-	}
-	default:
-	{
-	    textToXbm ("The entered number is not supported;\n"
-		       "You must supply 7, 8, 12, or 13 digits\n"
-		       "for the primary UPC/EAN number to encode.",
-		       httpHeader);
-	    return;
-	}
+        case 7:
+        {
+            if ((explicitDigitCount != 0) && (explicitDigitCount != 6))
+            {
+                textToXbm ("The entered number is not supported;\n"
+                           "Passing 7 digits is only possible for\n"
+                           "UPC-E barcodes.",
+                           httpHeader);
+                return;
+            }
+            barcode = makeUpcE (digits, shortForm, vstart, supplement);
+            break;
+        }
+        case 8:
+        {
+            if (explicitDigitCount == 0)
+            {
+                if (digits[0] == '0')
+                {
+                    barcode = makeUpcE (digits, shortForm, vstart, supplement);
+                }
+                else
+                {
+                    barcode = makeEan8 (digits, shortForm, vstart, supplement);
+                }
+            }
+            else if (explicitDigitCount == 6)
+            {
+                barcode = makeUpcE (digits, shortForm, vstart, supplement);
+                if (barcode == NULL)
+                {
+                    textToXbm ("The entered number is not supported;\n"
+                               "UPC-E barcodes must start with the\n"
+                               "digit 0 or 1.",
+                               httpHeader);
+                    return;
+                }
+            }
+            else if (explicitDigitCount == 8)
+            {
+                barcode = makeEan8 (digits, shortForm, vstart, supplement);
+            }
+            else
+            {
+                textToXbm ("The entered number is not supported;\n"
+                           "Passing 8 digits is only possible for\n"
+                           "EAN-8 and UPC-E barcodes.",
+                           httpHeader);
+                return;
+            }
+            break;
+        }
+        case 12:
+        {
+            if ((explicitDigitCount == 0) || (explicitDigitCount == 12))
+            {
+                barcode = makeUpcA (digits, shortForm, vstart, supplement);
+            }
+            else if (explicitDigitCount == 6)
+            {
+                barcode = makeUpcE (digits, shortForm, vstart, supplement);
+                if (barcode == NULL)
+                {
+                    textToXbm ("The entered number is not supported;\n"
+                               "In order to fit into a UPC-E barcode,\n"
+                               "the original number must meet several\n"
+                               "restrictions.",
+                               httpHeader);
+                    return;
+                }
+            }
+            else
+            {
+                textToXbm ("The entered number is not supported;\n"
+                           "Passing 12 digits is only possible for\n"
+                           "UPC-A and UPC-E barcodes.",
+                           httpHeader);
+                return;
+            }
+            break;
+        }
+        case 13:
+        {
+            if ((explicitDigitCount != 0)
+                && (explicitDigitCount != 12))
+            {
+                textToXbm ("The entered number is not supported;\n"
+                           "Passing 13 digits is only possible for\n"
+                           "EAN-13 barcodes.",
+                           httpHeader);
+                return;
+            }
+            barcode = makeEan13 (digits, shortForm, vstart, supplement);
+            break;
+        }
+        default:
+        {
+            textToXbm ("The entered number is not supported;\n"
+                       "You must supply 7, 8, 12, or 13 digits\n"
+                       "for the primary UPC/EAN number to encode.",
+                       httpHeader);
+            return;
+        }
     }
 
     if (supplement)
     {
-	if (shortForm)
-	{
-	    drawUpcEanSupplementalBars (barcode, supDigits,
-					barcode->width - supplement,
-					vstart, barcode->height - 1, 0);
-	}
-	else
-	{
-	    drawUpcEanSupplementalBars (barcode, supDigits,
-					barcode->width - supplement,
-					vstart + 1, barcode->height - 4, 1);
-	}
+        if (shortForm)
+        {
+            drawUpcEanSupplementalBars (barcode, supDigits,
+                                        barcode->width - supplement,
+                                        vstart, barcode->height - 1, 0);
+        }
+        else
+        {
+            drawUpcEanSupplementalBars (barcode, supDigits,
+                                        barcode->width - supplement,
+                                        vstart + 1, barcode->height - 4, 1);
+        }
     }
 
     if (banner != NULL)
     {
-	bitmapDrawString5x8 (barcode,
-			     (barcode->width + 1 -
-			      ((int) strlen (banner) * 5)) / 2,
-			     0,
-			     banner);
+        bitmapDrawString5x8 (barcode,
+                             (barcode->width + 1 -
+                              ((int) strlen (banner) * 5)) / 2,
+                             0,
+                             banner);
     }
 
     if (mcheck == 3)
     {
-	bitmapCopyRect (barcode, barcode->width - 5, barcode->height - 56,
-			&font5x8, 0, 0, 5, 56);
+        bitmapCopyRect (barcode, barcode->width - 5, barcode->height - 56,
+                        &font5x8, 0, 0, 5, 56);
     }
 
     bitmapPrintXBM (barcode,
-		    "the milk.com barcode generator; "
-		    "http://www.milk.com/barcode/",
-		    "milk_barcode", httpHeader);
+                    "the milk.com barcode generator; "
+                    "http://www.milk.com/barcode/",
+                    "milk_barcode", httpHeader);
 
     bitmapFree (barcode);
 }
@@ -1754,43 +1754,43 @@ void xbmIntegrity (int mask)
 
     for (;;)
     {
-	if ((fread (&c, 1, 1, stdin) == 0) || (c == 0x7d))
-	{
-	    break;
-	}
+        if ((fread (&c, 1, 1, stdin) == 0) || (c == 0x7d))
+        {
+            break;
+        }
 
-	if (c == trigger)
-	{
-	    nextIsABit = 1;
-	}
-	else if (nextIsABit)
-	{
-	    bits = ((bits >> 1) & 0x7f) + ((c == 0x20) ? 0 : 0x80);
-	    bitCount++;
-	    if (bitCount == 8)
-	    {
-		if (bits == 0)
-		{
-		    break;
-		}
+        if (c == trigger)
+        {
+            nextIsABit = 1;
+        }
+        else if (nextIsABit)
+        {
+            bits = ((bits >> 1) & 0x7f) + ((c == 0x20) ? 0 : 0x80);
+            bitCount++;
+            if (bitCount == 8)
+            {
+                if (bits == 0)
+                {
+                    break;
+                }
 
-		bits ^= mask;
-		val ^= bits;
+                bits ^= mask;
+                val ^= bits;
 
-		if ((bits >= 0x20) && (bits <= 0x7e))
-		{
-		    fwrite (&bits, 1, 1, stdout);
-		}
+                if ((bits >= 0x20) && (bits <= 0x7e))
+                {
+                    fwrite (&bits, 1, 1, stdout);
+                }
 
-		bitCount = 0;
-		bits = 0;
-	    }
-	    nextIsABit = 0;
-	}
-	else
-	{
-	    nextIsABit = 0;
-	}
+                bitCount = 0;
+                bits = 0;
+            }
+            nextIsABit = 0;
+        }
+        else
+        {
+            nextIsABit = 0;
+        }
     }
 
     printf (" 0x%02x\n", (val & 0xff));
@@ -1809,8 +1809,8 @@ int passwordFor (time_t t)
     char *s = password;
     while (*s)
     {
-	base = ((base * 37) + *s) & 0xffff;
-	s++;
+        base = ((base * 37) + *s) & 0xffff;
+        s++;
     }
 
     return base;
@@ -1831,9 +1831,9 @@ int verifyPassword (int pass)
     time_t now = time (NULL);
 
     return
-	(pass == passwordFor (now)) ||
-	(pass == passwordFor (now - 3600)) ||
-	(pass == passwordFor (now - 7200));
+        (pass == passwordFor (now)) ||
+        (pass == passwordFor (now - 3600)) ||
+        (pass == passwordFor (now - 7200));
 }
 
 
@@ -1852,55 +1852,55 @@ char *formExtractString (char *from, char *to, char *buf, int bufSize)
 
     while ((bufSize > 1) && (from < to))
     {
-	char c = *from;
-	from++;
+        char c = *from;
+        from++;
 
-	if (c == '=')
-	{
-	    break;
-	}
-	else if (c == '+')
-	{
-	    c = ' ';
-	}
-	else if (c == '%')
-	{
-	    char c1 = tolower (from[0]);
-	    char c2 = tolower (from[1]);
-	    from += 2;
+        if (c == '=')
+        {
+            break;
+        }
+        else if (c == '+')
+        {
+            c = ' ';
+        }
+        else if (c == '%')
+        {
+            char c1 = tolower (from[0]);
+            char c2 = tolower (from[1]);
+            from += 2;
 
-	    if ((c1 >= '0') && (c1 <= '9'))
-	    {
-		c = (c1 - '0') << 4;
-	    }
-	    else if ((c1 >= 'a') && (c1 <= 'f'))
-	    {
-		c = (c1 - 'a' + 10) << 4;
-	    }
-	    else
-	    {
-		/* bad character in % sequence */
-		return NULL;
-	    }
+            if ((c1 >= '0') && (c1 <= '9'))
+            {
+                c = (c1 - '0') << 4;
+            }
+            else if ((c1 >= 'a') && (c1 <= 'f'))
+            {
+                c = (c1 - 'a' + 10) << 4;
+            }
+            else
+            {
+                /* bad character in % sequence */
+                return NULL;
+            }
 
-	    if ((c2 >= '0') && (c2 <= '9'))
-	    {
-		c += c2 - '0';
-	    }
-	    else if ((c2 >= 'a') && (c2 <= 'f'))
-	    {
-		c += c2 - 'a' + 10;
-	    }
-	    else
-	    {
-		/* bad character in % sequence */
-		return NULL;
-	    }
-	}
+            if ((c2 >= '0') && (c2 <= '9'))
+            {
+                c += c2 - '0';
+            }
+            else if ((c2 >= 'a') && (c2 <= 'f'))
+            {
+                c += c2 - 'a' + 10;
+            }
+            else
+            {
+                /* bad character in % sequence */
+                return NULL;
+            }
+        }
 
-	*out = c;
-	out++;
-	bufSize--;
+        *out = c;
+        out++;
+        bufSize--;
     }
 
     *out = '\0';
@@ -1913,46 +1913,46 @@ char *formExtractString (char *from, char *to, char *buf, int bufSize)
  * are truncated; the stored results are always null-terminated; this
  * returns NULL if no data was successfully parsed. */
 char *formExtractFirst (char *form, char *key, int keySize,
-			char *value, int valueSize)
+                        char *value, int valueSize)
 {
     char *equalsPtr = form;
 
     /* find the '=' */
     while (*equalsPtr && (*equalsPtr != '='))
     {
-	equalsPtr++;
+        equalsPtr++;
     }
 
     if (*equalsPtr != '=')
     {
-	/* no '='; bad form data/end of form */
-	return NULL;
+        /* no '='; bad form data/end of form */
+        return NULL;
     }
 
     key = formExtractString (form, equalsPtr, key, keySize);
     if (key == NULL)
     {
-	/* format problem */
-	return NULL;
+        /* format problem */
+        return NULL;
     }
 
     /* find the '&' or the end of the string */
     form = equalsPtr + 1;
     while (*form && (*form != '&'))
     {
-	form++;
+        form++;
     }
 
     value = formExtractString (equalsPtr + 1, form, value, valueSize);
     if (value == NULL)
     {
-	/* format problem */
-	return NULL;
+        /* format problem */
+        return NULL;
     }
 
     if (*form == '&')
     {
-	form++;
+        form++;
     }
 
     return form;
@@ -1999,35 +1999,35 @@ int setMode (Options *opts, char *mode)
 {
     if (strcmp (mode, "upcean") == 0)
     {
-	opts->mode = MODE_UPCEAN;
+        opts->mode = MODE_UPCEAN;
     }
     else if (strcmp (mode, "upcean-short") == 0)
     {
-	opts->mode = MODE_UPCEAN_SHORT;
+        opts->mode = MODE_UPCEAN_SHORT;
     }
     else if (strcmp (mode, "upce") == 0)
     {
-	opts->mode = MODE_UPCE;
+        opts->mode = MODE_UPCE;
     }
     else if (strcmp (mode, "upce-short") == 0)
     {
-	opts->mode = MODE_UPCE_SHORT;
+        opts->mode = MODE_UPCE_SHORT;
     }
     else if (strcmp (mode, "ean8") == 0)
     {
-	opts->mode = MODE_EAN8;
+        opts->mode = MODE_EAN8;
     }
     else if (strcmp (mode, "ean8-short") == 0)
     {
-	opts->mode = MODE_EAN8_SHORT;
+        opts->mode = MODE_EAN8_SHORT;
     }
     else if (strcmp (mode, "text") == 0)
     {
-	opts->mode = MODE_TEXT;
+        opts->mode = MODE_TEXT;
     }
     else
     {
-	return 0;
+        return 0;
     }
 
     return 1;
@@ -2041,24 +2041,24 @@ void setOptionsFromForm (Options *opts, char *form)
 
     while (*form)
     {
-	form = formExtractFirst (form, key, 100, value, 2000);
-	if (form == NULL)
-	{
-	    break;
-	}
+        form = formExtractFirst (form, key, 100, value, 2000);
+        if (form == NULL)
+        {
+            break;
+        }
 
-	if (strcmp (key, "password") == 0)
-	{
-	    opts->password = strdup (value);
-	}
-	else if (strcmp (key, "value") == 0)
-	{
-	    opts->value = strdup (value);
-	}
-	else if (strcmp (key, "mode") == 0)
-	{
-	    setMode (opts, value);
-	}
+        if (strcmp (key, "password") == 0)
+        {
+            opts->password = strdup (value);
+        }
+        else if (strcmp (key, "value") == 0)
+        {
+            opts->value = strdup (value);
+        }
+        else if (strcmp (key, "mode") == 0)
+        {
+            setMode (opts, value);
+        }
     }
 }
 
@@ -2073,79 +2073,79 @@ void setOptionsFromArgv (Options *opts, int argc, char *argv[])
 
     while (argc > 0)
     {
-	if (strncmp (*argv, "--", 2) != 0)
-	{
-	    break;
-	}
+        if (strncmp (*argv, "--", 2) != 0)
+        {
+            break;
+        }
 
-	if (strcmp (*argv, "--require-password") == 0)
-	{
-	    opts->requirePassword = 1;
-	}
-	else if (strcmp (*argv, "--http-header") == 0)
-	{
-	    opts->httpHeader = 1;
-	}
-	else if (strncmp (*argv, "--mode=", 7) == 0)
-	{
-	    char *modeStr = (*argv) + 7;
-	    setMode (opts, modeStr);
-	}
-	else if (strcmp (*argv, "--check") == 0)
-	{
-	    opts->mode = MODE_CHECK;
-	}
-	else if (strcmp (*argv, "--print-password") == 0)
-	{
-	    opts->mode = MODE_PRINT_PASSWORD;
-	}
-	else if (strcmp (*argv, "--form-data") == 0)
-	{
-	    parseForm = 1;
-	}
-	else
-	{
-	    fprintf (stderr, "unrecognized option: %s\n", *argv);
-	}
+        if (strcmp (*argv, "--require-password") == 0)
+        {
+            opts->requirePassword = 1;
+        }
+        else if (strcmp (*argv, "--http-header") == 0)
+        {
+            opts->httpHeader = 1;
+        }
+        else if (strncmp (*argv, "--mode=", 7) == 0)
+        {
+            char *modeStr = (*argv) + 7;
+            setMode (opts, modeStr);
+        }
+        else if (strcmp (*argv, "--check") == 0)
+        {
+            opts->mode = MODE_CHECK;
+        }
+        else if (strcmp (*argv, "--print-password") == 0)
+        {
+            opts->mode = MODE_PRINT_PASSWORD;
+        }
+        else if (strcmp (*argv, "--form-data") == 0)
+        {
+            parseForm = 1;
+        }
+        else
+        {
+            fprintf (stderr, "unrecognized option: %s\n", *argv);
+        }
 
-	argc--;
-	argv++;
+        argc--;
+        argv++;
     }
 
     if (argc != 0)
     {
-	if (parseForm)
-	{
-	    setOptionsFromForm (opts, *argv);
-	}
-	else
-	{
-	    opts->value = strdup (*argv);
-	}
+        if (parseForm)
+        {
+            setOptionsFromForm (opts, *argv);
+        }
+        else
+        {
+            opts->value = strdup (*argv);
+        }
     }
 
     if (opts->value != NULL)
     {
-	char *value = opts->value;
-	if (*value == ':')
-	{
-	    char *col2 = strchr (value + 1, ':');
-	    if (col2 != NULL)
-	    {
-		int amt = col2 - value;
-		char *mstr = malloc (amt);
-		amt--;
-		memcpy (mstr, value + 1, amt);
-		mstr[amt] = '\0';
-		if (setMode (opts, mstr))
-		{
-		    char *newv = strdup (col2 + 1);
-		    free (opts->value);
-		    opts->value = newv;
-		}
-		free (mstr);
-	    }
-	}
+        char *value = opts->value;
+        if (*value == ':')
+        {
+            char *col2 = strchr (value + 1, ':');
+            if (col2 != NULL)
+            {
+                int amt = col2 - value;
+                char *mstr = malloc (amt);
+                amt--;
+                memcpy (mstr, value + 1, amt);
+                mstr[amt] = '\0';
+                if (setMode (opts, mstr))
+                {
+                    char *newv = strdup (col2 + 1);
+                    free (opts->value);
+                    opts->value = newv;
+                }
+                free (mstr);
+            }
+        }
     }
 }
 
@@ -2157,74 +2157,74 @@ int main (int argc, char *argv[])
 
     if (opts.requirePassword)
     {
-	if ((opts.password == NULL)
-	    || ! verifyPassword (strtol (opts.password, NULL, 0)))
-	{
-	    opts.mode = MODE_PONDER;
-	}
+        if ((opts.password == NULL)
+            || ! verifyPassword (strtol (opts.password, NULL, 0)))
+        {
+            opts.mode = MODE_PONDER;
+        }
     }
 
     switch (opts.mode)
     {
-	case MODE_UPCEAN:
-	{
-	    processUpcEan (opts.value, 0, 0, opts.httpHeader);
-	    break;
-	}
-	case MODE_UPCEAN_SHORT:
-	{
-	    processUpcEan (opts.value, 0, 1, opts.httpHeader);
-	    break;
-	}
-	case MODE_UPCE:
-	{
-	    processUpcEan (opts.value, 6, 0, opts.httpHeader);
-	    break;
-	}
-	case MODE_UPCE_SHORT:
-	{
-	    processUpcEan (opts.value, 6, 1, opts.httpHeader);
-	    break;
-	}
-	case MODE_EAN8:
-	{
-	    processUpcEan (opts.value, 8, 0, opts.httpHeader);
-	    break;
-	}
-	case MODE_EAN8_SHORT:
-	{
-	    processUpcEan (opts.value, 8, 1, opts.httpHeader);
-	    break;
-	}
-	case MODE_TEXT:
-	{
-	    if (opts.value == NULL)
-	    {
-		opts.value = "Enjoy milk's many splendors\nat www.milk.com!";
-	    }
-	    textToXbm (opts.value, opts.httpHeader);
-	    break;
-	}
-	case MODE_PONDER:
-	{
-	    wordsToPonderXbm (opts.httpHeader);
-	    break;
-	}
-	case MODE_CHECK:
-	{
-	    long mask = 0;
-	    if (opts.value != NULL)
-	    {
-		mask = strtol (opts.value, NULL, 0);
-	    }
-	    xbmIntegrity (mask);
-	    break;
-	}
-	case MODE_PRINT_PASSWORD:
-	{
-	    printPassword ();
-	    break;
-	}
+        case MODE_UPCEAN:
+        {
+            processUpcEan (opts.value, 0, 0, opts.httpHeader);
+            break;
+        }
+        case MODE_UPCEAN_SHORT:
+        {
+            processUpcEan (opts.value, 0, 1, opts.httpHeader);
+            break;
+        }
+        case MODE_UPCE:
+        {
+            processUpcEan (opts.value, 6, 0, opts.httpHeader);
+            break;
+        }
+        case MODE_UPCE_SHORT:
+        {
+            processUpcEan (opts.value, 6, 1, opts.httpHeader);
+            break;
+        }
+        case MODE_EAN8:
+        {
+            processUpcEan (opts.value, 8, 0, opts.httpHeader);
+            break;
+        }
+        case MODE_EAN8_SHORT:
+        {
+            processUpcEan (opts.value, 8, 1, opts.httpHeader);
+            break;
+        }
+        case MODE_TEXT:
+        {
+            if (opts.value == NULL)
+            {
+                opts.value = "Enjoy milk's many splendors\nat www.milk.com!";
+            }
+            textToXbm (opts.value, opts.httpHeader);
+            break;
+        }
+        case MODE_PONDER:
+        {
+            wordsToPonderXbm (opts.httpHeader);
+            break;
+        }
+        case MODE_CHECK:
+        {
+            long mask = 0;
+            if (opts.value != NULL)
+            {
+                mask = strtol (opts.value, NULL, 0);
+            }
+            xbmIntegrity (mask);
+            break;
+        }
+        case MODE_PRINT_PASSWORD:
+        {
+            printPassword ();
+            break;
+        }
     }
 
     exit (0);
