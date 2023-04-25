@@ -68,9 +68,6 @@ export class BitmapCanvas extends CanvasWrapper {
     const xMargin = Math.trunc((canvas.width - (width * scale)) / scale / 2);
     const yMargin = Math.trunc((canvas.height - (height * scale)) / scale / 2);
 
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
     ctx.scale(scale, scale);
     ctx.imageSmoothingEnabled = false;
     ctx.drawImage(this.#imageBitmap, xMargin, yMargin);
