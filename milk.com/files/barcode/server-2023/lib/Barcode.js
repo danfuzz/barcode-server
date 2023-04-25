@@ -562,6 +562,34 @@ export class Barcode {
   }
 
   /**
+   * Makes an EAN-13 barcode.
+   *
+   * @param {string} digits The barcode digits.
+   * @param {boolean} shortForm Produce the short-height form?
+   * @param {number} y The y coordinate to render at.
+   * @param {number} extraWidth Extra width to include in the result.
+   * @returns {Bitmap} The rendered result.
+   */
+  static makeEan13(digits, shortForm, y, extraWidth) {
+    if (digits[12] == '?') {
+      let mul = 1;
+      let sum = 0;
+
+      for (let i = 0; i < 12; i++) {
+        sum += charToDigit (digits[i]) * mul;
+        mul ^= 2;
+      }
+
+      const checksum = String((10 - (sum % 10)) % 10);
+      digits = digits.replace(/[?]/, checksum);
+    }
+
+    return shortForm
+      ? Barcode.#makeEan13Short(digits, y, extraWidth)
+      : Barcode.#makeEan13Full(digits, y, extraWidth);
+  }
+
+  /**
    * Turns a character into an int representing its digit value. Returns `0`
    * for things not in the range `'0'..'9'`.
    *
@@ -866,5 +894,56 @@ export class Barcode {
     }
 
     return expanded.join('');
+  }
+
+  /**
+   * Makes a full-height EAN-13 barcode.
+   *
+   * @param {string} digits The barcode digits.
+   * @param {number} y The y coordinate to render at.
+   * @param {number} extraWidth Extra width to include in the result.
+   * @returns {Bitmap} The rendered result.
+   */
+  static #makeEan13Full(digits, y, extraWidth) {
+    const baseWidth = 101;
+    const baseHeight = 60;
+
+    const height = baseHeight + y;
+    const bc = new Barcode(baseWidth + extraWidth, height);
+
+    bc.#drawEan13Bars(digits, 6, y, height - 10, height - 4);
+
+    bc.#drawDigitChar(0, height - 7, digits[0]);
+
+    for (let i = 0; i < 6; i++) {
+      bc.#drawDigitChar(11 + i*7, height - 7, digits[i+1]);
+      bc.#drawDigitChar(57 + i*7, height - 7, digits[i+7]);
+    }
+
+    return bc.bitmap;
+  }
+
+  /**
+   * Makes a short-height EAN-13 barcode.
+   *
+   * @param {string} digits The barcode digits.
+   * @param {number} y The y coordinate to render at.
+   * @param {number} extraWidth Extra width to include in the result.
+   * @returns {Bitmap} The rendered result.
+   */
+  static #makeEan13Short(digits, y, extraWidth) {
+    const baseWidth = 95;
+    const baseHeight = 40;
+
+    const height = baseHeight + y;
+    const bc = new Barcode(baseWidth + extraWidth, height);
+
+    bc.#drawEan13Bars(digits, 0, y, height - 9, height - 9);
+
+    for (let i = 0; i < 13; i++) {
+      bc.#drawDigitChar(9 + i*6, height - 7, digits[i]);
+    }
+
+    return bc.bitmap;
   }
 }
