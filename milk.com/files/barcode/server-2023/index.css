@@ -10,26 +10,26 @@
 }
 
 body {
-    background-color: #ddeeff;
-    color: #222244;
-    font-family: var(--font-family-body);
-    font-weight: normal;
-    font-size: 14pt;
-    line-height: 150%;
+  background-color: #ddeeff;
+  color: #222244;
+  font-family: var(--font-family-body);
+  font-weight: normal;
+  font-size: 14pt;
+  line-height: 150%;
 
-    margin-top: 2em;
-    margin-left: 5em;
-    margin-right: 5em;
+  margin-top: 2em;
+  margin-left: 5em;
+  margin-right: 5em;
 }
 
 code, tt {
-    font-family: var(--font-family-mono);
-    font-size: 95%;
+  font-family: var(--font-family-mono);
+  font-size: 95%;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-family-heading);
-    text-align: center;
+  font-family: var(--font-family-heading);
+  text-align: center;
 }
 
 table.control {
@@ -53,42 +53,42 @@ table.control input[name="supplement"] {
 }
 
 table.control td.button {
-    text-align: center;
-    padding-top: 0.5em;
+  text-align: center;
+  padding-top: 0.5em;
 }
 
 table.control td.button button {
-    font-family: var(--font-family-body-sans);
-    font-weight: bold;
-    font-size: 18pt;
+  font-family: var(--font-family-body-sans);
+  font-weight: bold;
+  font-size: 18pt;
 }
 
 /* Nodes of this class are generated programmatically. */
 .barcodeDisplay {
-    background-color: white;
-    color: black;
+  background-color: white;
+  color: black;
 }
 
 table.barcode {
-    width: 60vw;
-    height: 40vw;
-    margin-left: auto;
-    margin-right: auto;
+  width: 60vw;
+  height: 40vw;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 table.barcode td {
-    background-color: white;
-    padding-left: 1em;
-    padding-right: 1em;
-    padding-top: 1em;
-    padding-bottom: 1em;
+  background-color: white;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 1em;
+  padding-bottom: 1em;
 }
 
 @media only screen and ((pointer: coarse) or (width <= 500) or (height <= 500)) {
   body {
-      margin-top: 0.5em;
-      margin-left: 0.5em;
-      margin-right: 0.5em;
+    margin-top: 0.5em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
   }
 
   button.playPause {
@@ -96,9 +96,9 @@ table.barcode td {
   }
 
   table.control {
-      width: 95vw;
-      padding-top: 0.25em;
-      padding-bottom: 0.5em;
+    width: 95vw;
+    padding-top: 0.25em;
+    padding-bottom: 0.5em;
   }
 
   table.control input[name="title"] {
@@ -110,7 +110,7 @@ table.barcode td {
   }
 
   table.barcode {
-      width: 90vw;
-      height: 50vw;
+    width: 90vw;
+    height: 50vw;
   }
 }
