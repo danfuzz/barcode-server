@@ -11,7 +11,7 @@ const bc = new BitmapCanvas(
 function render() {
   const value  = document.querySelector('input[name="value"]').value;
   const title  = document.querySelector('input[name="title"]').value;
-  const format = document.querySelector('select[name="mode"]').value;
+  const format = document.querySelector('select[name="format"]').value;
   const short  = document.querySelector('input[name="short"]').checked;
   let bitmap   = null;
 
