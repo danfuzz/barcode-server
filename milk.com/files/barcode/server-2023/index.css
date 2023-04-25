@@ -13,7 +13,7 @@ body {
   background-color: #ddeeff;
   color: #222244;
   font-family: var(--font-family-body);
-  font-weight: normal;
+  font-weight: 300;
   font-size: 14pt;
   line-height: 110%;
 
@@ -42,6 +42,7 @@ table.control {
   margin-right: auto;
   padding-top: 2em;
   padding-bottom: 2em;
+  font-weight: normal;
 }
 
 table.control input[name="title"] {
@@ -119,6 +120,7 @@ table.barcode td {
     margin-top: 0.5em;
     margin-left: 0.5em;
     margin-right: 0.5em;
+    font-weight: normal;
   }
 
   button.playPause {
