@@ -394,11 +394,7 @@ export class BarcodeBitmap extends Bitmap {
    */
   static makeUpcA(digits, shortHeight, y, extraWidth) {
     if (!/^[0-9]{11}[?0-9]$/.test(digits)) {
-      return null;
-    }
-
-    if (digits.length !== 12) {
-      return null;
+      throw new Error('UPC-A must have 12 digits.');
     }
 
     if (digits[11] === '?') {
@@ -429,8 +425,15 @@ export class BarcodeBitmap extends Bitmap {
    * @returns {BarcodeBitmap} The rendered result.
    */
   static makeUpcE(digits, shortHeight, y, extraWidth) {
-    if (!/^[01][0-9]{5,10}[?0-9]$/.test(digits)) {
-      return null;
+    if (!/^([01]?[0-9]{6}|[01](?=.*0000)[0-9]{10})[?0-9]$/.test(digits)) {
+      throw new Error(
+        'UPC-E must be one of:\n' +
+        '* 7 digits\n' +
+        '* 8 digits starting with either "0" or "1"\n' +
+        '* 12 digits:\n' +
+        '  * starting with "0" or "1"\n' +
+        '  * with at least four "0"s in a row\n' +
+        '  * and with additional restrictions');
     }
 
     let compressed = null;
@@ -450,17 +453,9 @@ export class BarcodeBitmap extends Bitmap {
       }
     }
 
-    if (compressed === null) {
-      return null;
-    }
-
     if (compressed[7] === '?') {
+      // Expand, and copy the checksum.
       const expanded = this.#expandToUpcADigits(compressed);
-      if (expanded === null) {
-        return null;
-      }
-
-      // Copy the checksum.
       compressed = compressed.replace(/[?]/, expanded[11]);
     }
 
@@ -674,7 +669,7 @@ export class BarcodeBitmap extends Bitmap {
    * or `null` if the form factor is incorrect.
    *
    * @param {string} expanded The original form.
-   * @returns {?string} The compressed form.
+   * @returns {string} The compressed form.
    */
   static #compressToUpcEDigits(expanded) {
     const compressed = new Array(8);
@@ -682,7 +677,7 @@ export class BarcodeBitmap extends Bitmap {
     compressed[7] = expanded[11];
 
     if ((expanded[0] != '0') && (expanded[0] != '1')) {
-      return null;
+      throw new Error('UPC-E expanded form must start with "0" or "1".');
     }
 
     if (expanded[5] != '0') {
@@ -691,7 +686,7 @@ export class BarcodeBitmap extends Bitmap {
           || (expanded[8] != '0')
           || (expanded[9] != '0')
           || (expanded[10] < '5')) {
-        return null;
+        throw new Error('Invalid UPC-E expanded form.');
       }
 
       compressed[0] = expanded[0];
@@ -710,7 +705,7 @@ export class BarcodeBitmap extends Bitmap {
           || (expanded[7] != '0')
           || (expanded[8] != '0')
           || (expanded[9] != '0')) {
-        return null;
+        throw new Error('Invalid UPC-E expanded form.');
       }
 
       compressed[0] = expanded[0];
@@ -729,7 +724,7 @@ export class BarcodeBitmap extends Bitmap {
       if (   (expanded[6] != '0')
           || (expanded[7] != '0')
           || (expanded[8] != '0')) {
-        return null;
+        throw new Error('Invalid UPC-E expanded form.');
       }
 
       compressed[0] = expanded[0];
@@ -743,7 +738,7 @@ export class BarcodeBitmap extends Bitmap {
     }
 
     if ((expanded[6] != '0') || (expanded[7] != '0')) {
-      return null;
+      throw new Error('Invalid UPC-E expanded form.');
     }
 
     compressed[0] = expanded[0];
@@ -756,7 +751,7 @@ export class BarcodeBitmap extends Bitmap {
     return compressed.join('');
   }
 
-  /*
+  /**
    * Expands 8 UPC-E digits into a UPC-A number, returning the expanded form,
    * or returning `null` if the form factor is incorrect. This will also
    * calculate the check digit, if it is specified as '?'.
@@ -766,7 +761,7 @@ export class BarcodeBitmap extends Bitmap {
    */
   static #expandToUpcADigits(compressed) {
     if ((compressed[0] != '0') && (compressed[0] != '1')) {
-      return null;
+      throw new Error('UPC-E must start with an explicit or implied "0" or "1".');
     }
 
     const expanded = new Array(12);
