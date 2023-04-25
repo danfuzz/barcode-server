@@ -422,27 +422,27 @@ export class Barcode {
    */
   #drawEan8Bars(digits, x, y1, barY2, guardY2) {
     // Header.
-    this.#bitmap.vlin(x, y, guardY2);
-    this.#bitmap.vlin(x + 2, y, guardY2);
+    this.#bitmap.vlin(x, y1, guardY2);
+    this.#bitmap.vlin(x + 2, y1, guardY2);
 
     // Center marker.
-    this.#bitmap.vlin(x + 32, y, guardY2);
-    this.#bitmap.vlin(x + 34, y, guardY2);
+    this.#bitmap.vlin(x + 32, y1, guardY2);
+    this.#bitmap.vlin(x + 34, y1, guardY2);
 
     // Trailer.
-    this.#bitmap.vlin(x + 64, y, guardY2);
-    this.#bitmap.vlin(x + 66, y, guardY2);
+    this.#bitmap.vlin(x + 64, y1, guardY2);
+    this.#bitmap.vlin(x + 66, y1, guardY2);
 
     for (let i = 0; i < 4; i++) {
       this.#drawUpcEanDigit(
         x + 3 + i*7,
-        y,
+        y1,
         barY2,
         digits[i],
         'leftA');
       this.#drawUpcEanDigit(
         x + 36 + i*7,
-        y,
+        y1,
         barY2,
         digits[i+4],
         'right');
@@ -493,6 +493,10 @@ export class Barcode {
    * @returns {Bitmap} The rendered result.
    */
   static makeUpcA(digits, shortForm, y, extraWidth) {
+    if (!/^[0-9]{11}[?0-9]$/.test(digits)) {
+      return null;
+    }
+
     if (digits.length !== 12) {
       return null;
     }
@@ -525,6 +529,10 @@ export class Barcode {
    * @returns {Bitmap} The rendered result.
    */
   static makeUpcE(digits, shortForm, y, extraWidth) {
+    if (!/^[0-9]{6,11}[?0-9]$/.test(digits)) {
+      return null;
+    }
+
     let compressed = null;
 
     switch (digits.length) {
@@ -571,6 +579,10 @@ export class Barcode {
    * @returns {Bitmap} The rendered result.
    */
   static makeEan13(digits, shortForm, y, extraWidth) {
+    if (!/^[0-9]{12}[?0-9]$/.test(digits)) {
+      return null;
+    }
+
     if (digits[12] == '?') {
       let mul = 1;
       let sum = 0;
@@ -587,6 +599,38 @@ export class Barcode {
     return shortForm
       ? Barcode.#makeEan13Short(digits, y, extraWidth)
       : Barcode.#makeEan13Full(digits, y, extraWidth);
+  }
+
+  /**
+   * Makes an EAN-8 barcode.
+   *
+   * @param {string} digits The barcode digits.
+   * @param {boolean} shortForm Produce the short-height form?
+   * @param {number} y The y coordinate to render at.
+   * @param {number} extraWidth Extra width to include in the result.
+   * @returns {Bitmap} The rendered result.
+   */
+  static makeEan8(digits, shortForm, y, extraWidth) {
+    if (!/^[0-9]{7}[?0-9]$/.test(digits)) {
+      return null;
+    }
+
+    if (digits[7] == '?') {
+      let mul = 3;
+      let sum = 0;
+
+      for (let i = 0; i < 7; i++) {
+        sum += Barcode.#charToDigit(digits[i]) * mul;
+        mul ^= 2;
+      }
+
+      const checksum = String((10 - (sum % 10)) % 10);
+      digits = digits.replace(/[?]/, checksum);
+    }
+
+    return shortForm
+      ? Barcode.#makeEan8Short(digits, y, extraWidth)
+      : Barcode.#makeEan8Full(digits, y, extraWidth);
   }
 
   /**
@@ -942,6 +986,55 @@ export class Barcode {
 
     for (let i = 0; i < 13; i++) {
       bc.#drawDigitChar(9 + i*6, height - 7, digits[i]);
+    }
+
+    return bc.bitmap;
+  }
+
+  /**
+   * Makes a full-height EAN-8 barcode.
+   *
+   * @param {string} digits The barcode digits.
+   * @param {number} y The y coordinate to render at.
+   * @param {number} extraWidth Extra width to include in the result.
+   * @returns {Bitmap} The rendered result.
+   */
+  static #makeEan8Full(digits, y, extraWidth) {
+    const baseWidth = 67;
+    const baseHeight = 60;
+
+    const height = baseHeight + y;
+    const bc = new Barcode(baseWidth + extraWidth, height);
+
+    bc.#drawEan8Bars(digits, 0, y, height - 10, height - 4);
+
+    for (let i = 0; i < 4; i++) {
+      bc.#drawDigitChar(5 + i*7, height - 7, digits[i]);
+      bc.#drawDigitChar(37 + i*7, height - 7, digits[i+4]);
+    }
+
+    return bc.bitmap;
+  }
+
+  /**
+   * Makes a short-height EAN-8 barcode.
+   *
+   * @param {string} digits The barcode digits.
+   * @param {number} y The y coordinate to render at.
+   * @param {number} extraWidth Extra width to include in the result.
+   * @returns {Bitmap} The rendered result.
+   */
+  static #makeEan8Short(digits, y, extraWidth) {
+    const baseWidth = 67;
+    const baseHeight = 40;
+
+    const height = baseHeight + y;
+    const bc = new Barcode(baseWidth + extraWidth, height);
+
+    bc.#drawEan8Bars(digits, 0, y, height - 9, height - 9);
+
+    for (let i = 0; i < 8; i++) {
+      bc.#drawDigitChar(10 + i*6, height - 7, digits[i]);
     }
 
     return bc.bitmap;

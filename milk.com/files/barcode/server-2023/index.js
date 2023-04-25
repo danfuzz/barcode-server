@@ -29,10 +29,10 @@ document.querySelector('button.draw').onclick = () => {
       break;
     }
     case 'ean8': {
-      // TODO!
+      bitmap = Barcode.makeEan8(value, short, 0, 0);
       break;
     }
-    case 'upcean': {
+    case 'dwim': {
       // TODO!
       break;
     }
