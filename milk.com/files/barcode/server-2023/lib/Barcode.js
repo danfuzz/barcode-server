@@ -5,45 +5,6 @@ import { BarcodeBitmap } from './BarcodeBitmap.js';
 import { Bitmap } from './Bitmap.js';
 import { Text } from './Text.js';
 
-
-/*
- * This program generates images of UPC/EAN-style barcodes, into a `<canvas>`
- * element.
- *
- * If the --form-data option is given, then the value argument is parsed
- * as form data, and the following keys are recognized:
- *
- *     password: the password for the invocation (see below)
- *     value: the value to encode (e.g., the UPC number)
- *     mode: the mode, one of "upcean", "upcean-short", "upce", "upce-short",
- *       "ean8", "ean8-short", or "text"
- *
- * There is a default banner that is placed above resulting barcode images.
- * This default string is defined about half a page down from here. The
- * default may be overridden by placing some other banner text preceded
- * by a colon, after the number to encode, e.g. "12345678:hi mom".
- *
- * Note on the barcode formats: This program can generate 12 digit UPC-A 13
- * digit EAN-13, and 8 digit UPC-E and EAN-8, and, using the default
- * "upcean" mode, it chooses which one to do based on the number of digits
- * passed in. There is some digit count ambiguity between UPC-E and both
- * EAN-8 and UPC-A. In the default mode, UPC-A takes precedence over UPC-E,
- * but UPC-E takes precedence over EAN-8. You can force a particular version
- * with the "upce*" and "ean8*" modes (see above). In the "upce*" modes, you
- * can specify 12 digit codes which will be compressed (if possible) into
- * short form.
- *
- * These formats contain a final check digit; if you want the
- * program to calculate the check digit, then pass in a question mark
- * instead of a digit, e.g. "1234567890?". If you pass in a real final
- * digit, then that is used instead of calculating the check digit.
- *
- * All of these formats support a 2- or 5-digit supplemental code, which
- * appears to the right of the main code. To add a supplemental code, place
- * a comma and then the supplemental number after the main code, e.g.,
- * "5553221?,76".
- */
-
 /* A quick lesson in UPC and EAN barcodes:
  *
  * Each digit consists of 2 bars and 2 spaces, taking a total width of 7
