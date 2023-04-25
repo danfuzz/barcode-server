@@ -5,13 +5,12 @@
  * Barcode.c: Generator of images of barcodes, and accoutrements.
  * v2.4
  *
- * Do not ask for support unless you're willing to pay. See the original
- * Barcode Server page for more details:
- *
- *     <http://www.milk.com/barcode/>
- *
- * ----------------------------------------------------------------------------
- *
+ * This is the original C code that generated barcode images for the milk.com
+ * Barcode Server, with very few modifications. It is preserved here for
+ * historical interest.
+ */
+
+/*
  * This program generates XBM format images of UPC-style barcodes. It
  * can be used directly from the commandline, but it has explicit support
  * for being called from a CGI-type script. Call it like this:
