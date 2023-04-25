@@ -178,8 +178,15 @@ import { Bitmap } from './Bitmap.js';
  */
 
 /**
- * Barcode-rendering utility class.
- */
+ * Barcode-rendering class. Several of the methods take a form. The options are:
+ *
+ * * `dwim` -- Smart selection. Though, with it there is some ambiguity between
+ *   some of the forms. UPC-A takes precendence, and UPC-E after that.
+ * * `upcA` -- UPC-A.
+ * * `upcE` -- UPC-E.
+ * * `ean13` -- EAN-13.
+ * * `ean8` -- EAN-8.
+*/
 export class Barcode {
   /** @type {Bitmap} The bitmap to render into. */
   #bitmap;
@@ -482,6 +489,68 @@ export class Barcode {
   static #upcELastDigit = [
     0x38, 0x34, 0x32, 0x31, 0x2c, 0x26, 0x23, 0x2a, 0x29, 0x25
   ];
+
+  /**
+   * Makes an unadorned barcode in the indicated form.
+   *
+   * @param {string} form The barcode form.
+   * @param {string} digits The barcode digits.
+   * @param {boolean} shortForm Produce the short-height form?
+   * @returns {Bitmap} The rendered result.
+   */
+  static makeBarcode(form, digits, shortForm) {
+    let result = null;
+
+    switch (form) {
+      case 'upcA': {
+        result = Barcode.makeUpcA(digits, shortForm, 0, 0);
+        break;
+      }
+      case 'upcE': {
+        result = Barcode.makeUpcE(digits, shortForm, 0, 0);
+        break;
+      }
+      case 'ean13': {
+        result = Barcode.makeEan13(digits, shortForm, 0, 0);
+        break;
+      }
+      case 'ean8': {
+        result = Barcode.makeEan8(digits, shortForm, 0, 0);
+        break;
+      }
+      case 'dwim': {
+        switch (digits.length) {
+          case 7: {
+            result = Barcode.makeUpcE(digits, shortForm, 0, 0);
+            break;
+          }
+          case 8: {
+            result = Barcode.makeUpcE(digits, shortForm, 0, 0)
+              ?? Barcode.makeEan8(digits, shortForm, 0, 0)
+            break;
+          }
+          case 12: {
+            result = Barcode.makeUpcA(digits, shortForm, 0, 0);
+            break;
+          }
+          case 13: {
+            result = Barcode.makeEan13(digits, shortForm, 0, 0);
+            break;
+          }
+        }
+        break;
+      }
+      default: {
+        throw new Error(`Unknown form: ${form}`);
+      }
+    }
+
+    if (result === null) {
+      throw new Error(`Invalid form / digits: ${form}, ${digits}`);
+    }
+
+    return result;
+  }
 
   /**
    * Makes a UPC-A barcode.

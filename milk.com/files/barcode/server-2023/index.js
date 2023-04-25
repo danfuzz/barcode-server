@@ -16,24 +16,16 @@ document.querySelector('button.draw').onclick = () => {
   let bitmap  = null;
 
   switch (mode) {
-    case 'upca': {
-      bitmap = Barcode.makeUpcA(value, short, 0, 0);
-      break;
-    }
-    case 'upce': {
-      bitmap = Barcode.makeUpcE(value, short, 0, 0);
-      break;
-    }
-    case 'ean13': {
-      bitmap = Barcode.makeEan13(value, short, 0, 0);
-      break;
-    }
-    case 'ean8': {
-      bitmap = Barcode.makeEan8(value, short, 0, 0);
-      break;
-    }
+    case 'upcA':
+    case 'upcE':
+    case 'ean13':
+    case 'ean8':
     case 'dwim': {
-      // TODO!
+      try {
+        bitmap = Barcode.makeBarcode(mode, value, short);
+      } catch {
+        // Ignore it.
+      }
       break;
     }
     case 'text': {
