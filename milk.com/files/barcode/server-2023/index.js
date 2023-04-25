@@ -12,27 +12,19 @@ document.querySelector('button.draw').onclick = () => {
   const value = document.querySelector('input[name="value"]').value;
   const title = document.querySelector('input[name="title"]').value;
   const mode  = document.querySelector('select[name="mode"]').value;
+  const short = document.querySelector('input[name="short"]').checked;
   let bitmap  = null;
 
   switch (mode) {
     case 'upcean': {
-      bitmap = Barcode.makeUpcA(value, false, 0, 0);
-      break;
-    }
-    case 'upceanShort': {
-      bitmap = Barcode.makeUpcA(value, true, 0, 0);
+      bitmap = Barcode.makeUpcA(value, short, 0, 0);
       break;
     }
     case 'upce': {
-      bitmap = Barcode.makeUpcE(value, false, 0, 0);
+      bitmap = Barcode.makeUpcE(value, short, 0, 0);
       break;
     }
-    case 'upceShort': {
-      bitmap = Barcode.makeUpcE(value, true, 0, 0);
-      break;
-    }
-    case 'ean8':
-    case 'ean8Short': {
+    case 'ean8': {
       // TODO!
       break;
     }
