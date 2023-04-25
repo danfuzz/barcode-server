@@ -8,23 +8,27 @@ import { Text } from './lib/Text.js';
 const bc = new BitmapCanvas(
     document.querySelector('table.barcode td'), 'barcodeDisplay');
 
-document.querySelector('button.draw').onclick = () => {
-  const value = document.querySelector('input[name="value"]').value;
-  const title = document.querySelector('input[name="title"]').value;
-  const mode  = document.querySelector('select[name="mode"]').value;
-  const short = document.querySelector('input[name="short"]').checked;
-  let bitmap  = null;
+function render() {
+  const value  = document.querySelector('input[name="value"]').value;
+  const title  = document.querySelector('input[name="title"]').value;
+  const format = document.querySelector('select[name="mode"]').value;
+  const short  = document.querySelector('input[name="short"]').checked;
+  let bitmap   = null;
 
-  switch (mode) {
+  switch (format) {
     case 'upcA':
     case 'upcE':
     case 'ean13':
     case 'ean8':
     case 'dwim': {
       try {
-        bitmap = Barcode.makeBarcode(mode, value, short);
-      } catch {
-        // Ignore it.
+        const barcode = new Barcode();
+        barcode.setMainCode(format, value);
+        barcode.setShort(short);
+        bitmap = barcode.render();
+      } catch (e) {
+        console.log(e);
+        bitmap = Text.makeBitmap(e.message);
       }
       break;
     }
@@ -46,5 +50,5 @@ document.querySelector('button.draw').onclick = () => {
   bc.bitmap = bitmap;
 }
 
-const bitmap = Barcode.makeUpcA('10000000000?', false, 0, 0);
-bc.bitmap = bitmap;
+document.querySelector('button.draw').onclick = render;
+render();
