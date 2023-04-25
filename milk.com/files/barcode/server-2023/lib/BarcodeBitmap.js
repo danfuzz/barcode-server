@@ -475,7 +475,7 @@ export class BarcodeBitmap extends Bitmap {
    */
   static makeEan13(digits, shortHeight, y, extraWidth) {
     if (!/^[0-9]{12}[?0-9]$/.test(digits)) {
-      return null;
+      throw new Error('EAN-13 must have 13 digits.');
     }
 
     if (digits[12] == '?') {
@@ -507,7 +507,7 @@ export class BarcodeBitmap extends Bitmap {
    */
   static makeEan8(digits, shortHeight, y, extraWidth) {
     if (!/^[0-9]{7}[?0-9]$/.test(digits)) {
-      return null;
+      throw new Error('EAN-8 must have eight digits.');
     }
 
     if (digits[7] == '?') {
