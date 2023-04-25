@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Aleo:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Amaranth:ital,wght@0,400;0,700;1,400;1,700&family=Raleway:ital,wght@0,400;0,700;1,400;1,700&family=Redressed&family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+:root {
+  --font-family-body:       Aleo, serif;
+  --font-family-body-serif: Aleo, serif;
+  --font-family-body-sans:  Raleway, sans-serif;
+  --font-family-heading:    Amaranth, sans-serif;
+  --font-family-cursive:    Redressed, sans-serif;
+  --font-family-mono:       Roboto Mono, monospace;
+}
+
+body {
+  background-color: #ddeeff;
+  color: #222244;
+  font-family: var(--font-family-body);
+  font-weight: 300;
+  font-size: 14pt;
+  line-height: 110%;
+
+  margin-top: 2em;
+  margin-left: 5em;
+  margin-right: 5em;
+}
+
+code, tt, pre {
+  font-family: var(--font-family-mono);
+  font-size: 95%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-heading);
+  text-align: center;
+}
+
+h1, h2 {
+  line-height: 120%;
+}
+
+table.control {
+  width: 80vw;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 2em;
+  padding-bottom: 2em;
+  font-weight: normal;
+}
+
+table.control input[name="title"] {
+  width: 30em;
+}
+
+table.control input[name="value"] {
+  width: 15em;
+}
+
+table.control input[name="supplement"] {
+  width: 6em;
+}
+
+table.control td.button {
+  text-align: center;
+  padding-top: 0.5em;
+}
+
+table.control td.button button {
+  font-family: var(--font-family-body-sans);
+  font-weight: bold;
+  font-size: 18pt;
+  padding-top: 4pt;
+  padding-bottom: 4pt;
+  padding-left: 1em;
+  padding-right: 1em;
+  border-radius: 10pt;
+}
+
+table.control span.note {
+  padding-left: 1em;
+  font-size: 10pt;
+}
+
+table.footer {
+    font-family: var(--font-family-body-sans);
+    font-size: 12pt;
+    line-height: 100%;
+    border-top-style: solid;
+    border-top-color: #888;
+    margin-top: 3em;
+    padding-left: 1em;
+    padding-right: 1em;
+    width: 100%;
+}
+
+/* Nodes of this class are generated programmatically. */
+.barcodeDisplay {
+  background-color: white;
+  color: black;
+}
+
+table.barcode {
+  width: 60vw;
+  height: 40vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table.barcode td {
+  background-color: white;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  border-width: 2pt;
+  border-radius: 5pt;
+  border-style: solid;
+  border-color: #aac;
+}
+
+@media only screen and ((pointer: coarse) or (width <= 500) or (height <= 500)) {
+  body {
+    margin-top: 0.5em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    font-weight: normal;
+  }
+
+  button.playPause {
+    font-size: 20pt;
+  }
+
+  table.control {
+    width: 95vw;
+    padding-top: 0.25em;
+    padding-bottom: 0.5em;
+  }
+
+  table.control input[name="title"] {
+    width: 15em;
+  }
+
+  table.control input[name="value"] {
+    width: 10em;
+  }
+
+  table.control span.note {
+    padding-left: 0.25em;
+    font-size: 10pt;
+  }
+
+  table.barcode {
+    width: 90vw;
+    height: 50vw;
+  }
+}

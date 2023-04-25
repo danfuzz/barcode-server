@@ -1,24 +1,16 @@
 /*
+ * Copyright 1994-2023 the Barcode Server Authors (Dan Bornstein et alia).
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Barcode.c: Generator of images of barcodes, and accoutrements.
  * v2.4
  *
- * By Dan Bornstein, danfuzz@milk.com
- *
- * Copyright (c) 1994-2001 Dan Bornstein. All rights reserved. You may use
- * this source code without permission for non-commercial purposes, but you
- * must let me know via email (to danfuzz@milk.com) and give credit to me
- * somewhere where the end user can see it. For commercial use, contact me
- * (again danfuzz@milk.com) to figure out terms. In particular, you may not
- * resell this code (or a derivation thereof) without explicit written
- * permission from me (Dan Bornstein).
- *
- * Do not ask for support unless you're willing to pay. See the original
- * Barcode Server page for more details:
- *
- *     <http://www.milk.com/barcode/>
- *
- * ----------------------------------------------------------------------------
- *
+ * This is the original C code that generated barcode images for the milk.com
+ * Barcode Server, with very few modifications. It is preserved here for
+ * historical interest.
+ */
+
+/*
  * This program generates XBM format images of UPC-style barcodes. It
  * can be used directly from the commandline, but it has explicit support
  * for being called from a CGI-type script. Call it like this:
