@@ -369,6 +369,86 @@ export class Barcode {
     }
   }
 
+  /**
+   * Draws the actual barcode part of a EAN-13 barcode.
+   *
+   * @param {string} digits The digits to draw.
+   * @param {number} x The x coordinate.
+   * @param {number} y1 The starting y coordinate (inclusive).
+   * @param {number} barY2 The ending y coordinate for most bars (inclusive).
+   * @param {number} guardY2 The ending y coordinate for guards (inclusive).
+   */
+  #drawEan13Bars(digits, x, y1, barY2, guardY2) {
+    const leftPattern = Barcode.ean13FirstDigit[charToDigit (digits[0])];
+
+    // Header.
+    this.#bitmap.vlin(x, y, guardY2);
+    this.#bitmap.vlin(x + 2, y, guardY2);
+
+    // Center marker.
+    this.#bitmap.vlin(x + 46, y, guardY2);
+    this.#bitmap.vlin(x + 48, y, guardY2);
+
+    // Trailer.
+    this.#bitmap.vlin(x + 92, y, guardY2);
+    this.#bitmap.vlin(x + 94, y, guardY2);
+
+    for (let i = 0; i < 6; i++) {
+      const lset = (leftPattern & (1 << (5 - i))) ? 'leftB' : 'leftA';
+
+      this.#drawUpcEanDigit(
+        x + 3 + i*7,
+        y,
+        barY2,
+        digits[i+1],
+        lset);
+      this.#drawUpcEanDigit(
+        x + 50 + i*7,
+        y,
+        barY2,
+        digits[i+7],
+        'right');
+    }
+  }
+
+  /**
+   * Draws the actual barcode part of an EAN-8 barcode.
+   *
+   * @param {string} digits The digits to draw.
+   * @param {number} x The x coordinate.
+   * @param {number} y1 The starting y coordinate (inclusive).
+   * @param {number} barY2 The ending y coordinate for most bars (inclusive).
+   * @param {number} guardY2 The ending y coordinate for guards (inclusive).
+   */
+  #drawEan8Bars(digits, x, y1, barY2, guardY2) {
+    // Header.
+    this.#bitmap.vlin(x, y, guardY2);
+    this.#bitmap.vlin(x + 2, y, guardY2);
+
+    // Center marker.
+    this.#bitmap.vlin(x + 32, y, guardY2);
+    this.#bitmap.vlin(x + 34, y, guardY2);
+
+    // Trailer.
+    this.#bitmap.vlin(x + 64, y, guardY2);
+    this.#bitmap.vlin(x + 66, y, guardY2);
+
+    for (int i = 0; i < 4; i++) {
+      this.#drawUpcEanDigit(
+        x + 3 + i*7,
+        y,
+        barY2,
+        digits[i],
+        'leftA');
+      this.#drawUpcEanDigit(
+        x + 36 + i*7,
+        y,
+        barY2,
+        digits[i+4],
+        'right');
+    }
+  }
+
 
   //
   // Static members
