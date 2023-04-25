@@ -379,7 +379,7 @@ export class BarcodeBitmap extends Bitmap {
     const y2     = shortHeight ? (height - 1) : (height - 4);
     const result = new BarcodeBitmap(width, height);
 
-    result.#drawSupplement(digits, 0, 0, height - 1, !shortHeight);
+    result.#drawSupplement(digits, 0, 0, y2, !shortHeight);
     return result;
   }
 
