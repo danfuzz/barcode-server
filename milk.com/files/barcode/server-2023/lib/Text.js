@@ -13,7 +13,7 @@ export class Text {
    * @param {string} str The string to render.
    * @returns {Bitmap} A bitmap containing `str`.
    */
-  static #makeBitmap(str) {
+  static makeBitmap(str) {
     let maxWidth = 0;
     let oneWidth = 0;
     let lineCount = 1;

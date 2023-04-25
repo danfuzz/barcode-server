@@ -352,7 +352,7 @@ export class Barcode {
    */
   #drawUpcEBars(digits, x, y1, barY2, guardY2) {
     const parityRaw = Barcode.#upcELastDigit[Barcode.#charToDigit(digits[7])];
-    const parityPattern = (digits[0] === '0') ? parityPattern : ~parityPattern;
+    const parityPattern = (digits[0] === '0') ? parityRaw : ~parityRaw;
 
     // Header.
     this.#bitmap.vlin(x, y1, guardY2);
@@ -413,6 +413,10 @@ export class Barcode {
    * @returns {Bitmap} The rendered result.
    */
   static makeUpcA(digits, shortForm, y, extraWidth) {
+    if (digits.length !== 12) {
+      return null;
+    }
+
     if (digits[11] === '?') {
       let mul = 3;
       let sum = 0;
@@ -429,6 +433,52 @@ export class Barcode {
     return shortForm
       ? Barcode.#makeUpcAShort(digits, y, extraWidth)
       : Barcode.#makeUpcAFull(digits, y, extraWidth);
+  }
+
+  /**
+   * Makes a UPC-E barcode.
+   *
+   * @param {string} digits The barcode digits.
+   * @param {boolean} shortForm Produce the short-height form?
+   * @param {number} y The y coordinate to render at.
+   * @param {number} extraWidth Extra width to include in the result.
+   * @returns {Bitmap} The rendered result.
+   */
+  static makeUpcE(digits, shortForm, y, extraWidth) {
+    let compressed = null;
+
+    switch (digits.length) {
+      case 7: {
+        compressed = `0${digits}`;
+        break;
+      }
+      case 8: {
+        compressed = digits;
+        break;
+      }
+      case 12: {
+        compressed = this.#compressToUpcEDigits(digits);
+        break;
+      }
+    }
+
+    if (compressed === null) {
+      return null;
+    }
+
+    if (compressed[7] === '?') {
+      const expanded = this.#expandToUpcADigits(compressed);
+      if (expanded === null) {
+        return null;
+      }
+
+      // Copy the checksum.
+      compressed = compressed.replace(/[?]/, expanded[11]);
+    }
+
+    return shortForm
+      ? Barcode.#makeUpcEShort(compressed, y, extraWidth)
+      : Barcode.#makeUpcEFull(compressed, y, extraWidth);
   }
 
   /**
@@ -507,7 +557,7 @@ export class Barcode {
     bc.#drawUpcABars(digits, 0, y, height - 9, height - 9);
 
     for (let i = 0; i < 12; i++) {
-      bc.#drawDigitChar(result, 13 + i*6, height - 7, digits[i]);
+      bc.#drawDigitChar(13 + i*6, height - 7, digits[i]);
     }
 
     return bc.bitmap;
@@ -734,5 +784,7 @@ export class Barcode {
 
       expanded[11] = String((10 - (sum % 10)) % 10);
     }
+
+    return expanded.join('');
   }
 }

@@ -1,62 +1,6 @@
 // Copyright 1994-2023 the Barcode Server Authors (Dan Bornstein et alia).
 // SPDX-License-Identifier: Apache-2.0
 
-/* make and return a UPC-E barcode */
-Bitmap *makeUpcE (char *digits, int shortForm, int y, int extraWidth)
-{
-  char expandedDigits[13];
-  char compressedDigits[9];
-
-  expandedDigits[0] = '\0';
-  compressedDigits[0] = '\0';
-
-  switch (strlen (digits))
-  {
-    case 7:
-    {
-      compressedDigits[0] = '0';
-      strcpy (compressedDigits + 1, digits);
-      break;
-    }
-    case 8:
-    {
-      strcpy (compressedDigits, digits);
-      break;
-    }
-    case 12:
-    {
-      strcpy (expandedDigits, digits);
-      compressToUpcEDigits (expandedDigits, compressedDigits);
-      if (compressedDigits[0] == '\0')
-      {
-        return NULL;
-      }
-      break;
-    }
-    default:
-    {
-      return NULL;
-    }
-  }
-
-  expandToUpcADigits (compressedDigits, expandedDigits);
-  if (expandedDigits[0] == '\0')
-  {
-    return NULL;
-  }
-
-  compressedDigits[7] = expandedDigits[11];
-
-  if (shortForm)
-  {
-    return makeUpcEShort (compressedDigits, y, extraWidth);
-  }
-  else
-  {
-    return makeUpcEFull (compressedDigits, y, extraWidth);
-  }
-}
-
 /* draw the actual barcode part of a EAN-13 barcode */
 void drawEan13Bars (Bitmap *upcBitmap, char *digits, int x, int y,
            int barY2, int guardY2)
