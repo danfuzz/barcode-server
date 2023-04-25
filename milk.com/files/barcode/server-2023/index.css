@@ -22,7 +22,7 @@ body {
   margin-right: 5em;
 }
 
-code, tt {
+code, tt, pre {
   font-family: var(--font-family-mono);
   font-size: 95%;
 }
