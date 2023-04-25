@@ -70,23 +70,19 @@
 
 <p>
   Fill in the "value" above with a 7-, 8-, 12- or 13-digit number for a
-  barcode, y'know, like the ones you see on food, CDs, and books. If you want
-  to have the server generate a checksum for you, then just replace the last
-  digit with a question mark ("?"). By the way, those digits you sometimes
-  see to the left or the right of the barcodes are typically part of the
-  number encoded in the bars. And, please note, the barcodes that you can
-  generate here must consist only of digits (not letters or punctuation).
+  barcode, y'know, like the ones you see on food, books, and other retail
+  items. If you want to have the server generate a checksum for you, then just
+  replace the last digit with a question mark ("?"). The "format" field lets you
+  explicitly pick the barcode format, but if you leave it on "smart" it will
+  generally pick something that will work. And if you want a supplemental code
+  (often used to indicate the price of something), fill out the "supplement"
+  field.
 </p>
 
 <p>
-  The "format" field lets you explicitly pick the barcode format, but if you
-  leave it on "smart" it will generally pick something that will work.
-</p>
-
+  <b>Please note:</b> The barcodes that you can generate here must
+  consist only of digits (no letters or punctuation).
 <p>
-  If you want a supplemental code (often used to indicate the price of
-  something), fill out the "supplement" field.
-</p>
 
 <h3>Inspiration and History</h3>
 
@@ -113,6 +109,9 @@ that it once again operates&hellip; and even better that it did in the first
 place! Instead of being a back-end server written in C and glued together with
 shell scripts, it is now a front-end browser application. So, perhaps
 technically it is no longer really a "server" so much as a fancy web page.</p>
+
+<p>The technically inclined can check out the <a
+href="https://github.com/danfuzz/barcode-server">source code</a>.
 
 <h3>Official Barcode Numbers</h3>
 
@@ -220,11 +219,6 @@ fact that the synch marks themselves are not in fact representations of
 actual numerical quantities. Of course, if you care about this for anything
 more than cocktail party conversation, you should consult with your
 personal religious authority for the final word on the matter.</p>
-
-<h3>Technical Information</h3>
-
-<p>For the technically inclined, you can check out the <a
-href="https://github.com/danfuzz/barcode-server">source code</a>.
 
 <h3>One Final Word</h3>
 
