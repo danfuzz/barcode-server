@@ -6,7 +6,7 @@ import { BitmapCanvas } from './lib/BitmapCanvas.js';
 import { Text } from './lib/Text.js';
 
 const bc = new BitmapCanvas(
-    document.querySelector('table.barcode td'), 'barcodeDisplay');
+  document.querySelector('table.barcode td'), 'barcodeDisplay');
 
 function render() {
   const title      = document.querySelector('input[name="title"]').value;
