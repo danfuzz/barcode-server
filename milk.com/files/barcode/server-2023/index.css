@@ -61,6 +61,11 @@ table.control td.button button {
   font-family: var(--font-family-body-sans);
   font-weight: bold;
   font-size: 18pt;
+  padding-top: 4pt;
+  padding-bottom: 4pt;
+  padding-left: 1em;
+  padding-right: 1em;
+  border-radius: 10pt;
 }
 
 /* Nodes of this class are generated programmatically. */
@@ -82,6 +87,10 @@ table.barcode td {
   padding-right: 1em;
   padding-top: 1em;
   padding-bottom: 1em;
+  border-width: 2pt;
+  border-radius: 5pt;
+  border-style: solid;
+  border-color: #aac;
 }
 
 @media only screen and ((pointer: coarse) or (width <= 500) or (height <= 500)) {
