@@ -224,8 +224,20 @@ export class Barcode {
     this.#renderSupplementBitmap();
     this.#renderTitleBitmap();
 
-    // TODO: Combine the bitmaps.
-    return this.#mainBitmap;
+    const main = this.#mainBitmap;
+    const sup  = this.#supplementBitmap;
+    let result = main;
+
+    if (sup) {
+      const newWidth = result.width + 8 + sup.width;
+      result = new Bitmap(newWidth, result.height);
+      result.copyRect(0, 0, main, 0, 0, main.width, main.height);
+      result.copyRect(newWidth - sup.width, 0, sup, 0, 0, sup.width, sup.height);
+    }
+
+    // TODO: Title text.
+
+    return result;
   }
 
   /**
@@ -288,7 +300,9 @@ export class Barcode {
    * Renders {@link #supplementBitmap}.
    */
   #renderSupplementBitmap() {
-    // TODO
+    this.#supplementBitmap = (this.#supplementDigits === '')
+      ? null
+      : BarcodeBitmap.makeSupplement(this.#supplementDigits, this.#short);
   }
 
   /**

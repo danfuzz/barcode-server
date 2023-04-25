@@ -64,7 +64,7 @@ export class BarcodeBitmap extends Bitmap {
    * @param {boolean} textAbove Should the text be above (`true`) or below
    *   (`false`) the bars?
    */
-  #drawUpcEanSupplementalBars(digits, x, y1, y2, textAbove) {
+  #drawSupplement(digits, x, y1, y2, textAbove) {
     const len = digits.length;
     let parity;
     let textX;
@@ -77,8 +77,6 @@ export class BarcodeBitmap extends Bitmap {
       y2 -= 8;
       textY = y2 + 2;
     }
-
-    x += 8; // Skip the space between the main and supplemental.
 
     const c2d = (n) => BarcodeBitmap.#charToDigit(digits[n]);
 
@@ -111,9 +109,9 @@ export class BarcodeBitmap extends Bitmap {
 
       // Separator / end of header.
       if (i === 0) {
-        this.vlin(baseX, y, y2);
+        this.vlin(baseX, y1, y2);
       }
-      this.vlin(baseX + 1, y, y2);
+      this.vlin(baseX + 1, y1, y2);
 
       this.#drawUpcEanDigit(baseX + 2, y1, y2, digits[i], lset);
       this.#drawDigitChar(textX + i*6, textY, digits[i]);
@@ -302,7 +300,7 @@ export class BarcodeBitmap extends Bitmap {
   ];
 
   /**
-   * Makes an unadorned barcode in the indicated format.
+   * Makes a main barcode (including digit text) in the indicated format.
    *
    * @param {string} format The barcode format. See {@link Barcode#setCode}.
    * @param {string} digits The barcode digits.
@@ -360,6 +358,28 @@ export class BarcodeBitmap extends Bitmap {
       throw new Error(`Invalid format / digits: ${format}, ${digits}`);
     }
 
+    return result;
+  }
+
+  /**
+   * Makes a supplemental barcode (including digit text).
+   *
+   * @param {string} digits The barcode digits. Must be two or five digits in
+   *   length.
+   * @param {boolean} shortHeight Produce the short-height form?
+   * @returns {BarcodeBitmap} The rendered result.
+   */
+  static makeSupplement(digits, shortHeight) {
+    if (!/^([0-9]{2}|[0-9]{5})$/.test(digits)) {
+      throw new Error('Supplement must be either 2 or 5 digits.');
+    }
+
+    const width  = BarcodeBitmap.#upcEanSupplementWidth(digits);
+    const height = shortHeight ? 40 : 60;
+    const y2     = shortHeight ? (height - 1) : (height - 4);
+    const result = new BarcodeBitmap(width, height);
+
+    result.#drawSupplement(digits, 0, 0, height - 1, !shortHeight);
     return result;
   }
 
@@ -534,8 +554,8 @@ export class BarcodeBitmap extends Bitmap {
    */
   static #upcEanSupplementWidth(digits) {
     switch (digits.length) {
-      case 2:  return 28; // 8 + 4 + 2*7 + 1*2
-      case 5:  return 55; // 8 + 4 + 5*7 + 4*2
+      case 2:  return 20; // 4 + 2*7 + 1*2
+      case 5:  return 47; // 4 + 5*7 + 4*2
       default: return 0;
     }
   }

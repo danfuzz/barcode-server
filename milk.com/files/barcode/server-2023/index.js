@@ -9,11 +9,12 @@ const bc = new BitmapCanvas(
     document.querySelector('table.barcode td'), 'barcodeDisplay');
 
 function render() {
-  const value  = document.querySelector('input[name="value"]').value;
-  const title  = document.querySelector('input[name="title"]').value;
-  const format = document.querySelector('select[name="format"]').value;
-  const short  = document.querySelector('input[name="short"]').checked;
-  let bitmap   = null;
+  const title      = document.querySelector('input[name="title"]').value;
+  const value      = document.querySelector('input[name="value"]').value;
+  const supplement = document.querySelector('input[name="supplement"]').value;
+  const format     = document.querySelector('select[name="format"]').value;
+  const short      = document.querySelector('input[name="short"]').checked;
+  let bitmap       = null;
 
   switch (format) {
     case 'upcA':
@@ -25,6 +26,7 @@ function render() {
         const barcode = new Barcode();
         barcode.setMainCode(format, value);
         barcode.setShort(short);
+        barcode.setSupplementalCode(supplement);
         bitmap = barcode.render();
       } catch (e) {
         console.log(e);
