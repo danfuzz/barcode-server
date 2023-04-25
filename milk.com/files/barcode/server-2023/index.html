@@ -16,16 +16,17 @@
 <p><hr></p>
 
 <table class="control">
-<colgroup><col><col><col><col></colgroup>
 <tr>
   <td>Title text:</td>
   <td colspan="3">
-    <input type="text" name="title" size="70" value="milk.com">
+    <input type="text" name="title" maxlength="70" value="milk.com">
   </td>
 </tr>
 <tr>
   <td>Value:</td>
-  <td><input type="text" name="value" size="20" value="63447948954?"></td>
+  <td><input type="text" name="value" maxlength="20" value="63447948954?"></td>
+</tr>
+<tr>
   <td>Supplement:</td>
   <td><input type="text" name="supplement" size="5" value=""></td>
 </tr>
@@ -41,6 +42,8 @@
       <option value="text">Text Generator</option>
     </select>
   </td>
+</tr>
+<tr>
   <td>Short height:</td>
   <td>
     <input name="short" type="checkbox">

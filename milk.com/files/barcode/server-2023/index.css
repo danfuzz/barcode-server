@@ -40,20 +40,16 @@ table.control {
   padding-bottom: 2em;
 }
 
-table.control col:nth-child(1) {
-  width: 15%;
+table.control input[name="title"] {
+  width: 30em;
 }
 
-table.control col:nth-child(2) {
-  width: 30%;
+table.control input[name="value"] {
+  width: 15em;
 }
 
-table.control col:nth-child(3) {
-  width: 15%;
-}
-
-table.control col:nth-child(4) {
-  width: 40%;
+table.control input[name="supplement"] {
+  width: 6em;
 }
 
 table.control td.button {
@@ -86,4 +82,35 @@ table.barcode td {
     padding-right: 1em;
     padding-top: 1em;
     padding-bottom: 1em;
+}
+
+@media only screen and ((pointer: coarse) or (width <= 500) or (height <= 500)) {
+  body {
+      margin-top: 0.5em;
+      margin-left: 0.5em;
+      margin-right: 0.5em;
+  }
+
+  button.playPause {
+    font-size: 20pt;
+  }
+
+  table.control {
+      width: 95vw;
+      padding-top: 0.25em;
+      padding-bottom: 0.5em;
+  }
+
+  table.control input[name="title"] {
+    width: 15em;
+  }
+
+  table.control input[name="value"] {
+    width: 10em;
+  }
+
+  table.barcode {
+      width: 90vw;
+      height: 50vw;
+  }
 }
