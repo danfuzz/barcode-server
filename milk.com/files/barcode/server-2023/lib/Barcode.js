@@ -379,32 +379,32 @@ export class Barcode {
    * @param {number} guardY2 The ending y coordinate for guards (inclusive).
    */
   #drawEan13Bars(digits, x, y1, barY2, guardY2) {
-    const leftPattern = Barcode.ean13FirstDigit[charToDigit (digits[0])];
+    const leftPattern = Barcode.#ean13FirstDigit[Barcode.#charToDigit(digits[0])];
 
     // Header.
-    this.#bitmap.vlin(x, y, guardY2);
-    this.#bitmap.vlin(x + 2, y, guardY2);
+    this.#bitmap.vlin(x, y1, guardY2);
+    this.#bitmap.vlin(x + 2, y1, guardY2);
 
     // Center marker.
-    this.#bitmap.vlin(x + 46, y, guardY2);
-    this.#bitmap.vlin(x + 48, y, guardY2);
+    this.#bitmap.vlin(x + 46, y1, guardY2);
+    this.#bitmap.vlin(x + 48, y1, guardY2);
 
     // Trailer.
-    this.#bitmap.vlin(x + 92, y, guardY2);
-    this.#bitmap.vlin(x + 94, y, guardY2);
+    this.#bitmap.vlin(x + 92, y1, guardY2);
+    this.#bitmap.vlin(x + 94, y1, guardY2);
 
     for (let i = 0; i < 6; i++) {
       const lset = (leftPattern & (1 << (5 - i))) ? 'leftB' : 'leftA';
 
       this.#drawUpcEanDigit(
         x + 3 + i*7,
-        y,
+        y1,
         barY2,
         digits[i+1],
         lset);
       this.#drawUpcEanDigit(
         x + 50 + i*7,
-        y,
+        y1,
         barY2,
         digits[i+7],
         'right');
@@ -576,7 +576,7 @@ export class Barcode {
       let sum = 0;
 
       for (let i = 0; i < 12; i++) {
-        sum += charToDigit (digits[i]) * mul;
+        sum += Barcode.#charToDigit(digits[i]) * mul;
         mul ^= 2;
       }
 
