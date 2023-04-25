@@ -529,7 +529,7 @@ export class Barcode {
    * @returns {Bitmap} The rendered result.
    */
   static makeUpcE(digits, shortForm, y, extraWidth) {
-    if (!/^[0-9]{6,11}[?0-9]$/.test(digits)) {
+    if (!/^[01][0-9]{5,10}[?0-9]$/.test(digits)) {
       return null;
     }
 
