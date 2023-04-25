@@ -50,5 +50,5 @@ function render() {
   bc.bitmap = bitmap;
 }
 
-document.querySelector('button.draw').onclick = render;
+document.querySelector('td.button button').onclick = render;
 render();

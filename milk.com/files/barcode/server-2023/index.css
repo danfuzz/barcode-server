@@ -32,6 +32,41 @@ h1, h2, h3, h4, h5, h6 {
     text-align: center;
 }
 
+table.control {
+  width: 80vw;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+
+table.control col:nth-child(1) {
+  width: 15%;
+}
+
+table.control col:nth-child(2) {
+  width: 30%;
+}
+
+table.control col:nth-child(3) {
+  width: 15%;
+}
+
+table.control col:nth-child(4) {
+  width: 40%;
+}
+
+table.control td.button {
+    text-align: center;
+    padding-top: 0.5em;
+}
+
+table.control td.button button {
+    font-family: var(--font-family-body-sans);
+    font-weight: bold;
+    font-size: 18pt;
+}
+
 /* Nodes of this class are generated programmatically. */
 .barcodeDisplay {
     background-color: white;

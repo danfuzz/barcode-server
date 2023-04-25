@@ -15,17 +15,22 @@
 
 <p><hr></p>
 
-<table>
+<table class="control">
+<colgroup><col><col><col><col></colgroup>
 <tr>
   <td>Title text:</td>
-  <td><input type="text" name="title" size="50" value="milk.com"></td>
+  <td colspan="3">
+    <input type="text" name="title" size="70" value="milk.com">
+  </td>
 </tr>
 <tr>
-  <td>Value to encode:</td>
+  <td>Value:</td>
   <td><input type="text" name="value" size="20" value="63447948954?"></td>
+  <td>Supplement:</td>
+  <td><input type="text" name="supplement" size="5" value=""></td>
 </tr>
 <tr>
-  <td>Mode:</td>
+  <td>Format:</td>
   <td>
     <select name="mode" size="1">
       <option value="dwim" selected>"Smart"</option>
@@ -35,13 +40,16 @@
       <option value="ean8">EAN-8</option>
       <option value="text">Text Generator</option>
     </select>
-    &nbsp;
-    <label><input name="short" type="checkbox">&nbsp;Short height</label>
+  </td>
+  <td>Short height:</td>
+  <td>
+    <input name="short" type="checkbox">
   </td>
 </tr>
 <tr>
-  <td>&nbsp;</td>
-  <td><button class="draw">Show it!</button><br></td>
+  <td colspan="4" class="button">
+    <button>Show it!</button>
+  </td>
 </tr>
 </table>
 
