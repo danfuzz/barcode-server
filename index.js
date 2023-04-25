@@ -30,7 +30,6 @@ function render() {
         barcode.setTitle(title);
         bitmap = barcode.render();
       } catch (e) {
-        console.log(e);
         bitmap = Text.makeBitmap(e.message);
       }
       break;
