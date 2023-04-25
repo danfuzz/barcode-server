@@ -11,9 +11,7 @@
 
 <body>
 
-<h1>Barcode Server: Advanced Options</h1>
-
-<p><hr></p>
+<h1>Barcode Server</h1>
 
 <table class="control">
 <tr>
@@ -24,11 +22,17 @@
 </tr>
 <tr>
   <td>Value:</td>
-  <td><input type="text" name="value" maxlength="20" value="63447948954?"></td>
+  <td>
+    <input type="text" name="value" maxlength="20" value="63447948954?">
+    <span class="note">(up to 13 digits)</span>
+  </td>
 </tr>
 <tr>
   <td>Supplement:</td>
-  <td><input type="text" name="supplement" maxlength="5" value=""></td>
+  <td>
+    <input type="text" name="supplement" maxlength="5" value="">
+    <span class="note">(two or five digits only)</span>
+  </td>
 </tr>
 <tr>
   <td>Format:</td>
@@ -59,6 +63,182 @@
 <table class="barcode">
   <tr>
     <td></td>
+  </tr>
+</table>
+
+<p><hr></p>
+
+<p>
+  Fill in the "value" above with a 7-, 8-, 12- or 13-digit number for a
+  barcode, y'know, like the ones you see on food, CDs, and books. If you want
+  to have the server generate a checksum for you, then just replace the last
+  digit with a question mark ("?"). By the way, those digits you sometimes
+  see to the left or the right of the barcodes are typically part of the
+  number encoded in the bars. And, please note, the barcodes that you can
+  generate here must consist only of digits (not letters or punctuation).
+</p>
+
+<p>
+  The "format" field lets you explicitly pick the barcode format, but if you
+  leave it on "smart" it will generally pick something that will work.
+</p>
+
+<p>
+  If you want a supplemental code (often used to indicate the price of
+  something), fill out the "supplement" field.
+</p>
+
+<h3>Inspiration and History</h3>
+
+<p>This toy was inspired by the October 2, 1994 edition of <cite>You Can With
+Beakman and Jax</cite> (a newspaper comic), which featured an excellent
+description of how UPC barcodes work. Running near-continuously since that
+fateful day in the fall of 1994, this was the first barcode generating site on
+the web, and was also one of the first public websites (if not <i>the</i> first
+such website) to serve instantly-generated images. At first, the server only did
+the original UPC-A form (the most common product barcode type in the USA at the
+time), but in the spring of 2001, improvements were made such that the server
+could produce pretty much any commonly-used UPC or EAN barcode.</p>
+
+<p>Things took a turn for the worse sometime around 2010, when "XBM" (the image
+format produced by the server) stopped being supported by most web browsers. At
+that point, the server continued to work &mdash; sorta &mdash; except that it
+wasn't really easy to actually see what it was producing. Then, in 2023, the
+whole website was moved to a new system which didn't support "CGI" (the very
+basic web application framework that the Barcode Server used), and that totally
+broke it.</p>
+
+<p>Finally, again in 2023, the entire codebase of the server was revamped, such
+that it once again operates&hellip; and even better that it did in the first
+place! Instead of being a back-end server written in C and glued together with
+shell scripts, it is now a front-end browser application. So, perhaps
+technically it is no longer really a "server" so much as a fancy web page.</p>
+
+<h3>Official Barcode Numbers</h3>
+
+<p>Sometimes people end up here because they're trying to find out how to
+get a UPC code assigned for a product they wish to sell. In the USA,
+at least, the Uniform Code Council does that. Once you have a number for your
+product, feel free to come back here to look at the barcode associated with that
+number, and save it, or print it, or what have you.</p>
+
+<p>The previous paragraph isn't enough for some people.
+<a href="use.html">This link provides a more detailed explanation.</a></p>
+
+<p>If you're trying to encode the ISBN numbers that are found on books,
+magazines, and other media, then <a href="isbn.html">the ISBN page may have
+the information you require</a>.
+
+<h3>The Devil's In The Details...<i>Not!</i></h3>
+
+<p>One thing that people like to ask a lot is what the "meaning" is
+of the little marks to the left and right and smack dab in the middle of
+the code. On either side is a pair of thin dark bars separated by a thin
+light bar, and in the middle, there's always the pattern
+light-dark-light-dark-light. These are not in fact representations of a
+digit, but are rather merely synchronization marks (sometimes called
+"guard bars") that help
+barcode-reading equipment recognize that it is in fact looking at a barcode
+and help it determine the width of a mark (since barcodes come in different
+sizes and the distance of the code from the equipment optics can affect the
+readings as well). On the right-hand-side of a barcode (but not
+on the left), the digit "6" is represented by something that <i>does</i>
+bear a resemblence to the synch marks, and this has occasionally led
+"antichrist hunters" to exclaim that all barcodes contain embedded within
+them "the number of the beast" (that is, "666").</p>
+
+<table bgcolor="#d0d0d0" align=center border=1 cellpadding=5>
+  <tr>
+    <td align=center>Left and Right Synch Marks</td>
+    <td align=center>Middle Synch Mark</td>
+    <td align=center>Right Digit 6</td>
+    <td align=center>Left Digit 6</td>
+  </tr>
+  <tr>
+    <td align=center>
+      <table border=1 cellpadding=2 cellspacing=0><tr>
+        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
+        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
+        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
+      </tr></table>
+    </td>
+    <td align=center>
+      <table border=1 cellpadding=2 cellspacing=0><tr>
+        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
+        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
+        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
+        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
+        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
+      </tr></table>
+    </td>
+    <td align=center>
+      <table border=1 cellpadding=2 cellspacing=0><tr>
+        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
+        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
+        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
+        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
+        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
+        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
+        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
+      </tr></table>
+    </td>
+    <td align=center>
+      <table border=1 cellpadding=2 cellspacing=0><tr>
+        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
+        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
+        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
+        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
+        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
+        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
+        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
+      </tr></table>
+    </td>
+  </tr>
+</table>
+
+<p>That claim holds about as much water as saying the word "giggle" has the
+mark of the beast because it looks like it has three
+"6"s in it if you turn it upside down (if you draw your "g"s like
+upside down "6"s).</p>
+
+<table bgcolor="#d0d0d0" align=center border=1 cellpadding=5>
+  <tr>
+    <td align=center><img src="giggle.jpg"></td>
+  </tr>
+</table>
+
+<p>But just to re-fog things back up a bit: While the particular choice for
+synch marks makes a lot of sense from an engineering standpoint, there's no
+obvious reason that the particular representation for the digit "6" was
+chosen, and it is conceivably possible &mdash; but arguably extremely
+unlikely &mdash; that someone, some group of people,
+or even some sinister force
+(such as one of the devil's minions looking to get a big bonus that month)
+influenced the standards process so as to make the representation for "6"
+look as much like the synch marks as possible. But that doesn't change the
+fact that the synch marks themselves are not in fact representations of
+actual numerical quantities. Of course, if you care about this for anything
+more than cocktail party conversation, you should consult with your
+personal religious authority for the final word on the matter.</p>
+
+<h3>Technical Information</h3>
+
+<p>For the technically inclined, you can check out the <a
+href="https://github.com/danfuzz/barcode-server">source code</a>.
+
+<h3>One Final Word</h3>
+
+Enjoy!
+
+<table class="footer">
+  <tr>
+    <td>
+      Copyright 1994-2023 the Barcode Server Authors (Dan Bornstein et alia).<br>
+      SPDX-License-Identifier: Apache-2.0
+    </td>
+    <td>
+      <a href="http://milk.com/">milk.com</a> / barcode
+    </td>
   </tr>
 </table>
 

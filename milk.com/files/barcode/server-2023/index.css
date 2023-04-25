@@ -15,7 +15,7 @@ body {
   font-family: var(--font-family-body);
   font-weight: normal;
   font-size: 14pt;
-  line-height: 150%;
+  line-height: 110%;
 
   margin-top: 2em;
   margin-left: 5em;
@@ -30,6 +30,10 @@ code, tt {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-family-heading);
   text-align: center;
+}
+
+h1, h2 {
+  line-height: 120%;
 }
 
 table.control {
@@ -66,6 +70,23 @@ table.control td.button button {
   padding-left: 1em;
   padding-right: 1em;
   border-radius: 10pt;
+}
+
+table.control span.note {
+  padding-left: 1em;
+  font-size: 10pt;
+}
+
+table.footer {
+    font-family: var(--font-family-body-sans);
+    font-size: 12pt;
+    line-height: 100%;
+    border-top-style: solid;
+    border-top-color: #888;
+    margin-top: 3em;
+    padding-left: 1em;
+    padding-right: 1em;
+    width: 100%;
 }
 
 /* Nodes of this class are generated programmatically. */
@@ -116,6 +137,11 @@ table.barcode td {
 
   table.control input[name="value"] {
     width: 10em;
+  }
+
+  table.control span.note {
+    padding-left: 0.25em;
+    font-size: 10pt;
   }
 
   table.barcode {
