@@ -433,7 +433,7 @@ export class Barcode {
     this.#bitmap.vlin(x + 64, y, guardY2);
     this.#bitmap.vlin(x + 66, y, guardY2);
 
-    for (int i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) {
       this.#drawUpcEanDigit(
         x + 3 + i*7,
         y,
