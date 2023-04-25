@@ -27,6 +27,7 @@ function render() {
         barcode.setMainCode(format, value);
         barcode.setShort(short);
         barcode.setSupplementalCode(supplement);
+        barcode.setTitle(title);
         bitmap = barcode.render();
       } catch (e) {
         console.log(e);

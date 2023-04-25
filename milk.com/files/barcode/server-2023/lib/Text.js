@@ -60,7 +60,7 @@ export class Text {
    * @param {number} max The maximum number of columns.
    * @returns {string} The wrapped form.
    */
-  static #wrapText(str) {
+  static #wrapText(str, max) {
     const lines = str.split('\n');
     const result = [];
 
@@ -71,7 +71,7 @@ export class Text {
           break;
         } else {
           const frag = line.slice(0, max).replace(/ [^ ]*$/, '');
-          line = line.slice(0, frag.length).replace(/ *$/, '');
+          line = line.slice(frag.length).replace(/^ +/, '');
           result.push(frag);
         }
       }
