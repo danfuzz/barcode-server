@@ -115,7 +115,7 @@ table.barcode td {
   border-color: #aac;
 }
 
-@media only screen and ((pointer: coarse) or (width <= 500) or (height <= 500)) {
+@media only screen and (pointer: coarse) and (hover: none) {
   body {
     margin-top: 0.5em;
     margin-left: 0.5em;
