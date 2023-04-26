@@ -128,7 +128,7 @@ table.barcode td {
   }
 
   table.control {
-    width: 90vw;
+    width: 95vw;
     padding-top: 0.25em;
     padding-bottom: 0.5em;
     font-size: 12pt;
@@ -148,7 +148,7 @@ table.barcode td {
   }
 
   table.barcode {
-    width: 90vw;
+    width: 95vw;
     height: 50vw;
   }
 }
