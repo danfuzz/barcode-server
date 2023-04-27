@@ -112,7 +112,7 @@ table.barcode td {
   border-width: 2pt;
   border-radius: 5pt;
   border-style: solid;
-  border-color: #aac;
+  border-color: #bcd;
 }
 
 @media only screen and (pointer: coarse) and (hover: none) {
