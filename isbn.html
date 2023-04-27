@@ -18,17 +18,43 @@
 </p>
 
 <p>
-  If you want to encode an ISBN, it's pretty simple:
+  If you want to encode an ISBN, the "smart" format selector on the main page
+  will generally work, and you can also explicitly select "EAN-13 / ISBN."
 </p>
 
 <p>
-  Start with the 10 digit ISBN, and drop the last digit (or the "X" which
-  sometimes appears in place of a digit). This leaves you with nine digits. Add
-  "978" to the beginning of the number. Now you have a 12-digit number. The
-  final barcode will have 13 digits, the last digit being a "checksum" that the
-  Barcode Server will calculate for you if you put a question mark ("?") there.
-  So, enter the 12 digits &mdash; just the digits, no hyphens or anything else
-  &mdash; followed by the question mark, and you should get the proper barcode.
+  <b>If your ISBN number starts with the digits "978" and has thirteen
+  digits,</b> then that's a "modern" ISBN number, and the Barcode Server will
+  handle it directly.
+</p>
+
+<p>
+  <b>If your ISBN number does not start with "978" and has ten digits,</b> then
+  that's an "old-style" number, in which case here's how you convert it:
+</p>
+
+<ul>
+  <li>
+    Start with the ten-digit ISBN number. Don't include any dashes or other
+    punctuation.
+  </li>
+  <li>
+    Remove the final digit (or the "X" which sometimes appears in place of a
+    digit). This leaves you with nine digits.
+  </li>
+  <li>
+    Add "978" to the beginnging of the number. Now you have a twelve-digit
+    number.
+  </li>
+  <li>
+    Add "?" (a question mark) to the end for the thirteenth digit. This tells
+    the Barcode Server to calculate that digit (the checksum) for you.
+  </li>
+</ul>
+
+<p>
+  If you ask the server to show you the result, that should be the proper ISBN
+  barcode.
 </p>
 
 <p>
@@ -38,6 +64,8 @@
   Adding a question mark to the end, I get "978087337294?", which I type into
   the Barcode Server input field, and out pops the barcode for that book.
 </p>
+
+<h3>Supplemental codes</h3>
 
 <p>
   Note that often books come with a five digit supplemental barcode off to
