@@ -177,11 +177,13 @@ table.beast thead td {
   border-bottom-style: solid;
   border-color: #bcd;
   margin-bottom: 5pt;
+  vertical-align: bottom;
 }
 
 table.beast td {
   padding: 4px;
   border-width: 0;
+  font-size: 12pt;
 }
 
 table.beast table {
@@ -193,6 +195,19 @@ table.beast table td {
   border-width: 2px;
   border-color: #bcd;
   border-style: solid;
+  font-size: 8pt;
+}
+
+@media only screen and (pointer: coarse) and (hover: none) {
+  table.beast td {
+    font-size: 8pt;
+    font-weight: normal;
+  }
+
+  table.beast table td {
+    font-size: 5pt;
+    width: 1em;
+  }
 }
 
 table.giggle {
@@ -212,49 +227,49 @@ table.giggle td {
 <table class="beast">
   <thead>
     <tr>
-      <td>Left and Right<br>Synch Marks</td>
-      <td>Middle Synch<br>Mark</td>
+      <td>Edge<br>Synch Mark</td>
+      <td>Middle<br>Synch Mark</td>
       <td>Right Digit 6</td>
       <td>Left Digit 6</td>
     </tr>
   </thead>
   <tr>
     <td align=center>
-      <table border=1 cellpadding=2 cellspacing=0><tr>
-        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
-        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
-        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
+      <table><tr>
+        <td width=10 bgcolor=black align=center><font color=white>1</font></td>
+        <td width=10 bgcolor=white align=center><font color=black>0</font></td>
+        <td width=10 bgcolor=black align=center><font color=white>1</font></td>
       </tr></table>
     </td>
     <td align=center>
-      <table border=1 cellpadding=2 cellspacing=0><tr>
-        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
-        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
-        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
-        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
-        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
+      <table><tr>
+        <td width=10 bgcolor=white align=center><font color=black>0</font></td>
+        <td width=10 bgcolor=black align=center><font color=white>1</font></td>
+        <td width=10 bgcolor=white align=center><font color=black>0</font></td>
+        <td width=10 bgcolor=black align=center><font color=white>1</font></td>
+        <td width=10 bgcolor=white align=center><font color=black>0</font></td>
       </tr></table>
     </td>
     <td align=center>
-      <table border=1 cellpadding=2 cellspacing=0><tr>
-        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
-        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
-        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
-        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
-        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
-        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
-        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
+      <table><tr>
+        <td width=10 bgcolor=black align=center><font color=white>1</font></td>
+        <td width=10 bgcolor=white align=center><font color=black>0</font></td>
+        <td width=10 bgcolor=black align=center><font color=white>1</font></td>
+        <td width=10 bgcolor=white align=center><font color=black>0</font></td>
+        <td width=10 bgcolor=white align=center><font color=black>0</font></td>
+        <td width=10 bgcolor=white align=center><font color=black>0</font></td>
+        <td width=10 bgcolor=white align=center><font color=black>0</font></td>
       </tr></table>
     </td>
     <td align=center>
-      <table border=1 cellpadding=2 cellspacing=0><tr>
-        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
-        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
-        <td width=10 bgcolor=white align=center><font color=black size=1>0</font></td>
-        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
-        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
-        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
-        <td width=10 bgcolor=black align=center><font color=white size=1>1</font></td>
+      <table><tr>
+        <td width=10 bgcolor=white align=center><font color=black>0</font></td>
+        <td width=10 bgcolor=black align=center><font color=white>1</font></td>
+        <td width=10 bgcolor=white align=center><font color=black>0</font></td>
+        <td width=10 bgcolor=black align=center><font color=white>1</font></td>
+        <td width=10 bgcolor=black align=center><font color=white>1</font></td>
+        <td width=10 bgcolor=black align=center><font color=white>1</font></td>
+        <td width=10 bgcolor=black align=center><font color=white>1</font></td>
       </tr></table>
     </td>
   </tr>
