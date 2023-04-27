@@ -50,7 +50,7 @@ table.control input[name="title"] {
 }
 
 table.control input[name="value"] {
-  width: 15em;
+  width: 12em;
 }
 
 table.control input[name="supplement"] {
@@ -135,11 +135,15 @@ table.barcode td {
   }
 
   table.control input[name="title"] {
-    width: 15em;
+    width: 17em;
   }
 
   table.control input[name="value"] {
     width: 10em;
+  }
+
+  table.control input[name="supplement"] {
+    width: 4em;
   }
 
   table.control span.note {
