@@ -79,15 +79,15 @@ table.control span.note {
 }
 
 table.footer {
-    font-family: var(--font-family-body-sans);
-    font-size: 12pt;
-    line-height: 100%;
-    border-top-style: solid;
-    border-top-color: #888;
-    margin-top: 3em;
-    padding-left: 1em;
-    padding-right: 1em;
-    width: 100%;
+  font-family: var(--font-family-body-sans);
+  font-size: 12pt;
+  line-height: 100%;
+  border-top-style: solid;
+  border-top-color: #888;
+  margin-top: 3em;
+  padding-left: 1em;
+  padding-right: 1em;
+  width: 100%;
 }
 
 /* Nodes of this class are generated programmatically. */
