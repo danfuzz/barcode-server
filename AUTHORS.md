@@ -5,6 +5,6 @@ Authors
 -------
 
 * Dan Bornstein:
-  [Email](mailto:danfuzz@milk.com) /
+  [Email](mailto:hello-dan@murtbo.com) /
   [Website](http://milk.com/) /
   [GitHub](https://github.com/danfuzz)
