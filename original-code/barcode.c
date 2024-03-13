@@ -1,5 +1,5 @@
 /*
- * Copyright 1994-2023 the Barcode Server Authors (Dan Bornstein et alia).
+ * Copyright 1994-2024 the Barcode Server Authors (Dan Bornstein et alia).
  * SPDX-License-Identifier: Apache-2.0
  *
  * Barcode.c: Generator of images of barcodes, and accoutrements.
