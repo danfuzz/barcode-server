@@ -22,6 +22,16 @@ body {
   margin-right: 5em;
 }
 
+:link, :visited {
+  color:                   #22b;
+  text-decoration:         underline dotted #aae;
+  text-underline-position: under;
+}
+
+li {
+  line-height: 150%;
+}
+
 code, tt, pre {
   font-family: var(--font-family-mono);
   font-size:   95%;
