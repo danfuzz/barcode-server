@@ -11,25 +11,25 @@
 
 body {
   background-color: #ddeeff;
-  color: #222244;
+  color:       #222244;
   font-family: var(--font-family-body);
   font-weight: 300;
-  font-size: 14pt;
+  font-size:   14pt;
   line-height: 110%;
 
-  margin-top: 2em;
-  margin-left: 5em;
+  margin-top:   2em;
+  margin-left:  5em;
   margin-right: 5em;
 }
 
 code, tt, pre {
   font-family: var(--font-family-mono);
-  font-size: 95%;
+  font-size:   95%;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-family-heading);
-  text-align: center;
+  text-align:  center;
 }
 
 h1, h2 {
@@ -38,11 +38,11 @@ h1, h2 {
 
 table.control {
   width: 60vw;
-  margin-left: auto;
-  margin-right: auto;
-  padding-top: 2em;
+  margin-left:    auto;
+  margin-right:   auto;
+  padding-top:    2em;
   padding-bottom: 2em;
-  font-weight: normal;
+  font-weight:    normal;
 }
 
 table.control input[name="title"] {
@@ -58,69 +58,69 @@ table.control input[name="supplement"] {
 }
 
 table.control td.button {
-  text-align: center;
+  text-align:  center;
   padding-top: 0.5em;
 }
 
 table.control td.button button {
-  font-family: var(--font-family-body-sans);
-  font-weight: bold;
-  font-size: 18pt;
-  padding-top: 4pt;
+  font-family:    var(--font-family-body-sans);
+  font-weight:    bold;
+  font-size:      18pt;
+  padding-top:    4pt;
   padding-bottom: 4pt;
-  padding-left: 1em;
-  padding-right: 1em;
-  border-radius: 10pt;
+  padding-left:   1em;
+  padding-right:  1em;
+  border-radius:  10pt;
 }
 
 table.control span.note {
   padding-left: 1em;
-  font-size: 10pt;
+  font-size:    10pt;
 }
 
 table.footer {
-  font-family: var(--font-family-body-sans);
-  font-size: 12pt;
-  line-height: 100%;
+  font-family:      var(--font-family-body-sans);
+  font-size:        12pt;
+  line-height:      100%;
   border-top-style: solid;
   border-top-color: #888;
-  margin-top: 3em;
-  padding-left: 1em;
-  padding-right: 1em;
-  width: 100%;
+  margin-top:       3em;
+  padding-left:     1em;
+  padding-right:    1em;
+  width:            100%;
 }
 
 /* Nodes of this class are generated programmatically. */
 .barcodeDisplay {
   background-color: white;
-  color: black;
+  color:            black;
 }
 
 table.barcode {
-  width: 60vw;
-  height: 40vw;
-  margin-left: auto;
+  width:        60vw;
+  height:       40vw;
+  margin-left:  auto;
   margin-right: auto;
 }
 
 table.barcode td {
   background-color: white;
-  padding-left: 1em;
-  padding-right: 1em;
-  padding-top: 1em;
-  padding-bottom: 1em;
-  border-width: 2pt;
-  border-radius: 5pt;
-  border-style: solid;
-  border-color: #bcd;
+  padding-left:     1em;
+  padding-right:    1em;
+  padding-top:      1em;
+  padding-bottom:   1em;
+  border-width:     2pt;
+  border-radius:    5pt;
+  border-style:     solid;
+  border-color:     #bcd;
 }
 
 @media only screen and (pointer: coarse) and (hover: none) {
   body {
-    margin-top: 0.5em;
-    margin-left: 0.5em;
+    margin-top:   0.5em;
+    margin-left:  0.5em;
     margin-right: 0.5em;
-    font-weight: normal;
+    font-weight:  normal;
   }
 
   button.playPause {
@@ -128,10 +128,10 @@ table.barcode td {
   }
 
   table.control {
-    width: 95vw;
-    padding-top: 0.25em;
+    width:          95vw;
+    padding-top:    0.25em;
     padding-bottom: 0.5em;
-    font-size: 12pt;
+    font-size:      12pt;
   }
 
   table.control input[name="title"] {
@@ -148,11 +148,11 @@ table.barcode td {
 
   table.control span.note {
     padding-left: 0.25em;
-    font-size: 10pt;
+    font-size:    10pt;
   }
 
   table.barcode {
-    width: 95vw;
+    width:  95vw;
     height: 50vw;
   }
 }
